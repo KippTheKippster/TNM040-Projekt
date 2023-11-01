@@ -9,21 +9,28 @@ window.addEventListener("DOMContentLoaded", () => {
   console.log("Dom loaded")
 })
 
+document.addEventListener('click', function(e) {  //Listens to clicked html elements
+  prevClickedTarget = e.target;
+  console.log(prevClickedTarget)
+}, false);  
+
+let prevClickedTarget = null;
+
 function App() // Här körs appen
-{
+{ 
   console.log("Wa");
 
   const [equationString, setEquationString] = useState("")
 
-  function onEquationChanged(target)
+  function onEquationChanged(e)
   {
-    setEquationString(String.raw`${target.target.value}`)
+    setEquationString(String.raw`${e.target.value}`)
   }
 
   function onInsertButtonPressed(target)
   {
     const finalString = equationString + "\\pi";
-    document.getElementById("equationInput").value = finalString;
+    document.getElementById("equation-input").value = finalString;
     setEquationString(finalString);
   }
 
@@ -38,10 +45,12 @@ function App() // Här körs appen
     <>
       <div>
         <h1>LaTex är koolt</h1>
-        <button onClick={onInsertButtonPressed} id='insertButton'>π</button>
+        <button onClick={onInsertButtonPressed} id='insert-button'>π</button>
         <div id='text-box-container'>
-        <textarea onChange={onEquationChanged} id="equationInput" className='text-box'/>
-        <MathComponent tex={String.raw`${equationString}`} />
+          <textarea onChange={onEquationChanged} id="equation-input" className='text-box'/>
+        </div>
+        <div id='latex-container'>
+          <MathComponent tex={String.raw`${equationString}`} />
         </div>
       </div>
     </>
