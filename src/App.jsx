@@ -9,7 +9,7 @@ window.addEventListener("DOMContentLoaded", () => {
   console.log("Dom loaded")
 })
 
-function App() 
+function App() // Här körs appen
 {
   console.log("Wa");
   const [equationTarget, setEquationString] = useState(null)
