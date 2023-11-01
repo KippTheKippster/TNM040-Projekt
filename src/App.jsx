@@ -1,7 +1,9 @@
 import { useState } from 'react'
 import './App.css'
 import React from "react";
-import { MathComponent } from "mathjax-react";
+//import { MathComponent } from "mathjax-react";
+import Latex from 'react-latex-next'
+import 'katex/dist/katex.min.css'
 
 window.addEventListener("DOMContentLoaded", () => {
   console.log("Dom loaded")
@@ -106,7 +108,7 @@ function App() // Här körs appen
           {/* Creates a button for every element in the first row of symbols array */}
           {symbols.map((symbol, index) => (
             <button key={index} onClick={() => onInsertButtonPressed(symbol[0])}>
-              <MathComponent tex={String.raw`${symbol[0]}`} />
+              {/*<Latex>{String.raw`${symbol[0]}`}</Latex>*/}
             </button>
           ))}
         </div>
@@ -114,7 +116,7 @@ function App() // Här körs appen
           <textarea onChange={onEquationChanged} id="equation-input" className='text-box'/>
         </div>
         <div id='latex-container'>
-          <MathComponent tex={String.raw`${equationString}`} />
+          <Latex>{String.raw`$${equationString}$`}</Latex>
         </div>
       </div>
     </>
