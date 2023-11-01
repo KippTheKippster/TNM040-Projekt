@@ -36,7 +36,7 @@ function App() // Här körs appen
     <>
       <div>
         <div className='logo'>
-          <img src="src/Squeezy_LaTex_logo.svg" alt="Logo"></img>
+          <img src="src/Squeezy_LaTex_logo2.svg" alt="Logo"></img>
         </div>
         <button onClick={onInsertButtonPressed} id='insertButton'>π</button>
         <div id='text-box-container'>
