@@ -12,24 +12,19 @@ window.addEventListener("DOMContentLoaded", () => {
 function App() // Här körs appen
 {
   console.log("Wa");
-  const [equationTarget, setEquationString] = useState(null)
-  const [insertTarget, setInsert] = useState(null)
 
-  const equationInput = document.getElementById("equationInput")
-  const insertButton = document.getElementById("insertButton")
+  const [equationString, setEquationString] = useState("")
 
   function onEquationChanged(target)
   {
-    setEquationString(target)
+    setEquationString(String.raw`${target.target.value}`)
   }
 
   function onInsertButtonPressed(target)
   {
-    if (equationInput == null)
-      return
-
-    equationInput.value += "\\pi"
-    setInsert(target)
+    const finalString = equationString + "\\pi";
+    document.getElementById("equationInput").value = finalString;
+    setEquationString(finalString);
   }
 
   var a = 
@@ -39,10 +34,6 @@ function App() // Här körs appen
     ["\\pass", -1,]
   ]
 
-  let equationText = "";
-  if (equationInput != null)
-    equationText = equationInput.value
-
   return (
     <>
       <div>
@@ -50,8 +41,8 @@ function App() // Här körs appen
         <button onClick={onInsertButtonPressed} id='insertButton'>π</button>
         <div id='text-box-container'>
         <textarea onChange={onEquationChanged} id="equationInput" className='text-box'/>
+        <MathComponent tex={String.raw`${equationString}`} />
         </div>
-        <MathComponent tex={String.raw`${equationText}`} />
       </div>
     </>
   )
