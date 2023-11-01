@@ -108,7 +108,7 @@ function App() // Här körs appen
           {/* Creates a button for every element in the first row of symbols array */}
           {symbols.map((symbol, index) => (
             <button key={index} onClick={() => onInsertButtonPressed(symbol[0])}>
-              {/*<Latex>{String.raw`${symbol[0]}`}</Latex>*/}
+              {<Latex>{String.raw`$${symbol[0]}$`}</Latex>}
             </button>
           ))}
         </div>
