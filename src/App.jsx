@@ -98,6 +98,24 @@ function App() // Här körs appen
     greek, relation, logic, geometry, arrows, other_symbols
   ]
 
+  //download button funktion.. 
+  function onDownloadButtonClicked(e) {
+    downloadText("SqueezyLatextEquation", equationString)
+  }
+
+  function downloadText(filename, text) {   
+    var element = document.createElement('a');
+    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(equationString));
+    element.setAttribute('download', filename);
+  
+    element.style.display = 'none';
+    document.body.appendChild(element);
+  
+    element.click();
+  
+    document.body.removeChild(element);
+  } 
+
   return (
     <>
       <div>
@@ -118,9 +136,17 @@ function App() // Här körs appen
         <div id='latex-container'>
           <Latex>{String.raw`$${equationString}$`}</Latex>
         </div>
+        <div className='Buttons'> 
+        <button type="button" onClick={onDownloadButtonClicked}>Download</button>
+
+
+        </div>
       </div>
+
     </>
   );
+
+
 }
 
 export default App;
