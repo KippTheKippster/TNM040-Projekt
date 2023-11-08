@@ -4,6 +4,9 @@ import React from "react";
 //import { MathComponent } from "mathjax-react";
 import Latex from 'react-latex-next'
 import 'katex/dist/katex.min.css'
+import CodeMirror from '@uiw/react-codemirror';
+
+
 
 window.addEventListener("DOMContentLoaded", () => {
   console.log("Dom loaded")
@@ -24,13 +27,35 @@ function App() // Här körs appen
 
   function onEquationChanged(e)
   {
-    setEquationString(String.raw`${e.target.value}`)
+    setEquationString(String.raw`${e}`)
+    //console.log("sadasda" + e)
   }
 
   function onInsertButtonPressed(symbol) {
     const finalString = equationString + symbol;
     document.getElementById("equation-input").value = finalString;
+    console.log(document.getElementById("equation-input"))
     setEquationString(finalString);
+  }
+
+  function BracketHighlighter({ text }) {
+    const children = React.useMemo(() => {
+      const out = [];
+      let level = 0;
+      text.split(/([()])/).forEach((bit) => {
+        if (bit === "(") {
+          level++;
+          out.push(<span className={"l" + level}>{bit}</span>);
+        } else if (bit === ")") {
+          out.push(<span className={"l" + level}>{bit}</span>);
+          level--;
+        } else {
+          out.push(bit);
+        }
+      });
+      return out;
+    }, [text]);
+    return React.createElement(React.Fragment, {}, ...children);
   }
 
   const greek = [
@@ -115,9 +140,17 @@ function App() // Här körs appen
   
     document.body.removeChild(element);
   } 
-
+const [text, setText] = React.useState(
+    "(my text (is here and) I want (to highlight (something here)))"
+  );
   return (
     <>
+    
+    <div className="App">
+      <input value={text} onChange={(e) => setText(e.target.value)} />
+      <br />
+      <BracketHighlighter text={text} />
+    </div>
       <div>
         <div className='logo'>
           <img src="/src/Squeezy_LaTex_logo2.svg" alt="Logo" />
@@ -131,7 +164,8 @@ function App() // Här körs appen
           ))}
         </div>
         <div id='text-box-container'>
-          <textarea onChange={onEquationChanged} id="equation-input" className='text-box'/>
+          {<CodeMirror onChange={onEquationChanged} readOnly={false} id="equation-input" className='text-box'/>}
+        
         </div>
         <div id='latex-container'>
           <Latex>{String.raw`$${equationString}$`}</Latex>
