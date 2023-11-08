@@ -4,6 +4,9 @@ import React from "react";
 //import { MathComponent } from "mathjax-react";
 import Latex from 'react-latex-next'
 import 'katex/dist/katex.min.css'
+import CodeMirror from '@uiw/react-codemirror';
+
+
 import symbols from './Symbols.jsx';
 import functions from './Functions.jsx';
 import * as MathMLReader from './mathml/MathMLReader.jsx'
@@ -45,7 +48,7 @@ function App() // Här körs appen
 
   function onEquationChanged(e)
   {
-    setEquationString(String.raw`${e.target.value}`)
+    setEquationString(String.raw`${e}`)
   }
 
   function onInsertButtonPressed(symbol) {
@@ -62,12 +65,6 @@ function App() // Här körs appen
       }
       return prevElements;
     });
-  }
-
-  function onLatextContainerClicked(e)
-  {
-    console.log("HUD")
-    console.log(e)
   }
 
   //download button funktion.. 
@@ -139,7 +136,8 @@ function App() // Här körs appen
           </div>
         </div>
         <div id='text-box-container'>
-          <textarea onChange={onEquationChanged} id="equation-input" className='text-box'/>
+          {<CodeMirror onChange={onEquationChanged} readOnly={false} id="equation-input" className='text-box'/>}
+        
         </div>
         <div id='latex-container'>
           <Latex>{String.raw`$${equationString}$`}</Latex>
