@@ -141,7 +141,7 @@ function App() // Här körs appen
 
 
         </div>
-      </div>
+        </div>
 
     </>
   );

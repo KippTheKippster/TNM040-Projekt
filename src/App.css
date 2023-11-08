@@ -20,6 +20,12 @@
 .logo {
   display: flex;
   align-items: center;
-  height: 5vw;
+  max-height: 50px;
+  margin: 5vw;
+}
+
+.logo img{
+  max-height: 80%;
+  max-width: 50%;
   
 }
