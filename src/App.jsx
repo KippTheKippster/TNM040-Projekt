@@ -6,6 +6,23 @@ import Latex from 'react-latex-next'
 import 'katex/dist/katex.min.css'
 import CodeMirror from '@uiw/react-codemirror';
 
+import {EditorView} from "@codemirror/view"
+
+let baseTheme = EditorView.baseTheme({
+  ".cm-o-replacement": {
+    display: "inline-block",
+    width: ".5em",
+    height: ".5em",
+    borderRadius: ".25em",
+    textAlign: "left"
+  },
+  "&light .cm-o-replacement": {
+    backgroundColor: "#04c"
+  },
+  "&dark .cm-o-replacement": {
+    backgroundColor: "#5bf"
+  }
+})
 
 
 window.addEventListener("DOMContentLoaded", () => {
@@ -38,25 +55,7 @@ function App() // Här körs appen
     setEquationString(finalString);
   }
 
-  function BracketHighlighter({ text }) {
-    const children = React.useMemo(() => {
-      const out = [];
-      let level = 0;
-      text.split(/([()])/).forEach((bit) => {
-        if (bit === "(") {
-          level++;
-          out.push(<span className={"l" + level}>{bit}</span>);
-        } else if (bit === ")") {
-          out.push(<span className={"l" + level}>{bit}</span>);
-          level--;
-        } else {
-          out.push(bit);
-        }
-      });
-      return out;
-    }, [text]);
-    return React.createElement(React.Fragment, {}, ...children);
-  }
+ 
 
   const greek = [
     ["\\alpha", -1],
@@ -146,11 +145,7 @@ const [text, setText] = React.useState(
   return (
     <>
     
-    <div className="App">
-      <input value={text} onChange={(e) => setText(e.target.value)} />
-      <br />
-      <BracketHighlighter text={text} />
-    </div>
+   
       <div>
         <div className='logo'>
           <img src="/src/Squeezy_LaTex_logo2.svg" alt="Logo" />
@@ -164,7 +159,7 @@ const [text, setText] = React.useState(
           ))}
         </div>
         <div id='text-box-container'>
-          {<CodeMirror onChange={onEquationChanged} readOnly={false} id="equation-input" className='text-box'/>}
+          {<CodeMirror theme={baseTheme} onChange={onEquationChanged} readOnly={false} id="equation-input" className='text-box'/>}
         
         </div>
         <div id='latex-container'>
@@ -175,7 +170,7 @@ const [text, setText] = React.useState(
 
 
         </div>
-        </div>
+      </div>
 
     </>
   );
