@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import './App.css'
 import React from "react";
 //import { MathComponent } from "mathjax-react";
@@ -6,23 +6,41 @@ import Latex from 'react-latex-next'
 import 'katex/dist/katex.min.css'
 import symbols from './Symbols.jsx';
 import functions from './Functions.jsx';
+import * as MathMLReader from './mathml/MathMLReader.jsx'
 
 window.addEventListener("DOMContentLoaded", () => {
   console.log("Dom loaded")
 })
 
+/*
 document.addEventListener('click', function(e) {  //Listens to clicked html elements
   prevClickedTarget = e.target;
   console.log(prevClickedTarget)
 }, false);  
+*/
 
 let prevClickedTarget = null;
 
 function App() // Här körs appen
 { 
-  console.log("Wa");
+  console.log("App called");
 
   const [equationString, setEquationString] = useState("")
+
+  //runs after render
+  useEffect(() => 
+  {
+    let semantics = document.querySelector("#latex-container span");
+    console.log(semantics); 
+    if (semantics == null) //No renderable equation.
+      return;
+
+    console.log("adding")
+    semantics.addEventListener("click", function(e){
+      //alert("You clicked " + e + " times");
+      console.log(e)
+    });
+  });
 
   function onEquationChanged(e)
   {
@@ -35,9 +53,22 @@ function App() // Här körs appen
     setEquationString(finalString);
   }
 
+  function onLatextContainerClicked(e)
+  {
+    console.log("HUD")
+    console.log(e)
+  }
+
   //download button funktion.. 
   function onDownloadButtonClicked(e) {
     downloadText("SqueezyLatextEquation", equationString)
+  }
+
+  function onMathmlClicked()
+  {
+    const elements = MathMLReader.getMathMLElementsByCode("\\pi");
+    console.log("Got elenemts: ");
+    console.log(elements);
   }
 
   function downloadText(filename, text) {   
@@ -75,7 +106,7 @@ function App() // Här körs appen
         </div>
         <div className='Buttons'> 
         <button type="button" onClick={onDownloadButtonClicked}>Download</button>
-
+        <button type='button' onClick={onMathmlClicked}> </button>
 
         </div>
         </div>
