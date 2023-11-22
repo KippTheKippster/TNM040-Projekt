@@ -222,7 +222,7 @@ function App() // Här körs appen
           </div>
         </div>
         <div id='text-box-container'>
-          {<CodeMirror theme={baseTheme} onChange={onEquationChanged} readOnly={false} id="equation-input" className='text-box'/>}
+          {<CodeMirror theme={baseTheme} onChange={onEquationChanged} readOnly={false} id="equation-input" className='text-box' value={equationString}/>}
         
         </div>
         <div id='latex-container'>
