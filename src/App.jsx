@@ -69,6 +69,19 @@ function App() // Här körs appen
   //runs after render
   useEffect(() => 
   {
+    const __latex = document.querySelector("#latex-container span.__Latex__")
+    if (__latex != null && __latex.children.length == 0)
+    {
+      if (__latex.textContent[0] == '$')
+      {
+        __latex.textContent = __latex.textContent.substring(1);
+      }
+      if (__latex.textContent.endsWith("$"))
+      {
+        __latex.textContent = __latex.textContent.slice(0, -1);
+      }
+    }
+
     const elements = MathMLReader.getAllSpanElements()
     let index = Math.min(Math.max(elementIndex, 0), elements.length)
     console.log(elements)
@@ -111,7 +124,7 @@ function App() // Här körs appen
 
   function onInsertButtonPressed(symbol) {
     const finalString = equationString + symbol;
-    document.getElementById("equation-input").value = finalString;
+    //document.getElementById("equation-input").value = finalString;
     setEquationString(finalString);
     
     // Update recentElements state
@@ -198,7 +211,6 @@ function App() // Här körs appen
         </div>
         <div id='text-box-container'>
           {<CodeMirror theme={baseTheme} onChange={onEquationChanged} readOnly={false} id="equation-input" className='text-box' value={equationString}/>}
-        
         </div>
         <div id='latex-container'>
           <Latex>{String.raw`$${equationString}$`}</Latex>
@@ -206,7 +218,6 @@ function App() // Här körs appen
         </div>
         <div className='Buttons'> 
         <button type="button" onClick={onDownloadButtonClicked}>Download</button>
-
         </div>
       </div>
 
