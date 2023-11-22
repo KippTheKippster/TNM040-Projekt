@@ -41,11 +41,19 @@
 #latex-caret{
   position: absolute;
   background-color: rgb(255, 255, 255);
-  left: 200px;
-  top: 200px;
+  /*left: 200px;
+  top: 200px;*/
   min-height: 10px;
   min-width: 10px;
+  animation: cursor-blink 1.5s steps(2) infinite;
 }
+
+@keyframes cursor-blink {
+  0% {
+    opacity: 0;
+  }
+}
+
 @media (prefers-color-scheme: light) {
   #latex-caret {
     background-color: black;
