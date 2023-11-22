@@ -174,7 +174,7 @@ const greek = [
 
   const arrows = [
     ["\\rightarrow", -1],
-    ["\\to", -1],
+    //["\\to", -1],
     ["\\mapsto", -1],
     ["\\leftarrow", -1],
     ["\\gets", -1],
@@ -233,7 +233,14 @@ const greek = [
   ]
 
   const symbols = [
-    greek, relation, logic, geometry, binary, arrows, sets, other_symbols
+    { name: 'Greek', symbols: greek },
+    { name: 'Relation', symbols: relation },
+    { name: 'Logic', symbols: logic },
+    { name: 'Geometry', symbols: geometry },
+    { name: 'Binary', symbols: binary },
+    { name: 'Arrows', symbols: arrows },
+    { name: 'Sets', symbols: sets },
+    { name: 'Other Symbols', symbols: other_symbols }
   ]
 
   export default symbols;

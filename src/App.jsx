@@ -4,6 +4,26 @@ import React from "react";
 //import { MathComponent } from "mathjax-react";
 import Latex from 'react-latex-next'
 import 'katex/dist/katex.min.css'
+import CodeMirror from '@uiw/react-codemirror';
+
+import {EditorView} from "@codemirror/view"
+
+let baseTheme = EditorView.baseTheme({
+  ".cm-o-replacement": {
+    display: "inline-block",
+    width: ".5em",
+    height: ".5em",
+    borderRadius: ".25em",
+    textAlign: "left"
+  },
+  "&light .cm-o-replacement": {
+    backgroundColor: "#04c"
+  },
+  "&dark .cm-o-replacement": {
+    backgroundColor: "#5bf"
+  }
+})
+
 import symbols from './Symbols.jsx';
 import functions from './Functions.jsx';
 import * as MathMLReader from './mathml/MathMLReader.jsx'
@@ -26,6 +46,7 @@ function App() // Här körs appen
   console.log("App called");
 
   const [equationString, setEquationString] = useState("")
+  const [recentElements, setRecentElements] = useState([]);
   const [elementIndex, setElementIndex] = useState(0)
 
 
@@ -85,20 +106,25 @@ function App() // Här körs appen
 
   function onEquationChanged(e)
   {
-    setEquationString(String.raw`${e.target.value}`)
+    setEquationString(String.raw`${e}`)
   }
 
   function onInsertButtonPressed(symbol) {
     const finalString = equationString + symbol;
     document.getElementById("equation-input").value = finalString;
     setEquationString(finalString);
+    
+    // Update recentElements state
+    setRecentElements((prevElements) => {
+      // Check if the symbol is already in the recent elements
+      if (!prevElements.includes(symbol)) {
+        // Add the new symbol to the beginning of the array
+        return [symbol, ...prevElements.slice(0, 5)]; // Keep only the latest 6 elements
+      }
+      return prevElements;
+    });
   }
 
-  function onLatextContainerClicked(e)
-  {
-    console.log("HUD")
-    console.log(e)
-  }
 
   //download button funktion.. 
   function onDownloadButtonClicked(e) {
@@ -125,23 +151,54 @@ function App() // Här körs appen
     document.body.removeChild(element);
   } 
 
+  const renderDropdownContent = (symbolObject) => {
+    return symbolObject.symbols.map((symbol, index) => (
+      <button key={index} onClick={() => onInsertButtonPressed(symbol[0])}>
+        {/* Display the symbol using the Latex component */}
+        {<Latex>{String.raw`$${symbol[0]}$`}</Latex>}
+      </button>
+    ));
+  };
+
   return (
     <>
+    
+   
       <div>
         <div className='logo'>
           <img src="/src/Squeezy_LaTex_logo2.svg" alt="Logo" />
         </div>
-        <div>
-          {/* Creates a button for every element in the first row of symbols array */}
-          <button type='button'onClick={onMathmlClicked}>Do The Thing</button>
-          {symbols.map((symbol, index) => (
-            <button key={index} onClick={() => onInsertButtonPressed(symbol[0])}>
-              {<Latex>{String.raw`$${symbol[0]}$`}</Latex>}
-            </button>
+        <div className="dropdown-container">
+          {symbols.map((symbolObject, index) => (
+            // Create a "dropdown" for each object
+            <div key={index} className="dropdown">
+              {/* The button for the dropdown displays the name of the object */}
+              <button className="dropbtn">
+                {/* Display the first symbol underneath the name */}
+                {symbolObject.symbols.length > 0 && (
+                  <Latex>{String.raw`$${symbolObject.symbols[0][0]}$`}</Latex>
+                )}
+                <br />
+                {symbolObject.name}
+              </button>
+              {/* This div will contain the dropdown content */}
+              <div className="dropdown-content">
+                {/* Call the function to render dropdown content */}
+                {renderDropdownContent(symbolObject)}
+              </div>
+            </div>
           ))}
+          <div className="recent-elements">
+              {recentElements.map((element, index) => (
+              <button key={index} onClick={() => onInsertButtonPressed(element)}>
+                {<Latex>{String.raw`$${element}$`}</Latex>}
+              </button>
+            ))}
+          </div>
         </div>
         <div id='text-box-container'>
-          <textarea onChange={onEquationChanged} id="equation-input" className='text-box'/>
+          {<CodeMirror theme={baseTheme} onChange={onEquationChanged} readOnly={false} id="equation-input" className='text-box' value={equationString}/>}
+        
         </div>
         <div id='latex-container'>
           <Latex>{String.raw`$${equationString}$`}</Latex>
@@ -151,7 +208,7 @@ function App() // Här körs appen
         <button type="button" onClick={onDownloadButtonClicked}>Download</button>
 
         </div>
-        </div>
+      </div>
 
     </>
   );
