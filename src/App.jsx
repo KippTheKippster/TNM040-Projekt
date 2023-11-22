@@ -38,7 +38,7 @@ let prevClickedTarget = null;
 
 function App() // Här körs appen
 { 
-  console.log("Wa");
+  
 
   const [equationString, setEquationString] = useState("")
 
@@ -159,7 +159,7 @@ const [text, setText] = React.useState(
           ))}
         </div>
         <div id='text-box-container'>
-          {<CodeMirror theme={baseTheme} onChange={onEquationChanged} readOnly={false} id="equation-input" className='text-box'/>}
+          {<CodeMirror theme={baseTheme} onChange={onEquationChanged} readOnly={false} id="equation-input" className='text-box' value={equationString}/>}
         
         </div>
         <div id='latex-container'>
