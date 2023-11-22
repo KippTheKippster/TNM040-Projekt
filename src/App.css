@@ -33,3 +33,12 @@
   font-size: 40px;
   margin-top: 3vw;
 }
+
+#latex-caret{
+  position: absolute;
+  background-color: black;
+  left: 200px;
+  top: 200px;
+  min-height: 10px;
+  min-width: 10px;
+}
