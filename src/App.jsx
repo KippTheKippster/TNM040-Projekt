@@ -54,11 +54,11 @@ function App() // Här körs appen
   {
     if (event.code == "ArrowRight")
     {
-      setElementIndex(elementIndex + 1);
+      addLaTeXCaretIndex(1);
     }
     else if (event.code == "ArrowLeft")
     {
-      setElementIndex(elementIndex - 1);
+      addLaTeXCaretIndex(-1);
     }
   }
 
@@ -81,19 +81,24 @@ function App() // Här körs appen
         __latex.textContent = __latex.textContent.slice(0, -1);
       }
     }
-
-    const elements = MathMLReader.getAllSpanElements()
-    let index = Math.min(Math.max(elementIndex, 0), elements.length)
-    console.log(elements)
-    console.log("Final: " + index)
-    setLaTeXCaret(elements[index])    
     document.addEventListener('keydown', onKeyDown);
     return () => {
       document.removeEventListener('keydown', onKeyDown);
     };
   });
 
-  function setLaTeXCaret(element)
+  function addLaTeXCaretIndex(add)
+  {
+    const elements = MathMLReader.getAllSpanElements()
+    let index = Math.min(Math.max(elementIndex + add, 0), elements.length - 1)
+    console.log(index)
+    if (index != elementIndex) //Stupid?
+      setElementIndex(index);
+
+    drawLaTeXCaret(elements[index])    
+  }
+
+  function drawLaTeXCaret(element)
   {
     const caret = document.getElementById("latex-caret");
 

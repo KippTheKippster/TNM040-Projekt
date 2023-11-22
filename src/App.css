@@ -46,6 +46,7 @@
   min-height: 10px;
   min-width: 10px;
 }
+
 @media (prefers-color-scheme: light) {
   #latex-caret {
     background-color: black;

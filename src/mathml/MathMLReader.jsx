@@ -67,7 +67,7 @@ function getAllSpanElements()
         const text = child.textContent.replace(/\u200B/g,'') // Removes big funny whitespace chars
         if (child.children.length == 0 && text != "")
         {
-            console.log("code: " + child.textContent.charCodeAt(0) + ": " + child.textContent)
+            //console.log("code: " + child.textContent.charCodeAt(0) + ": " + child.textContent)
             return child;
         }
 
