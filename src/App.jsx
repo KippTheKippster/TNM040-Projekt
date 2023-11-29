@@ -12,7 +12,7 @@ let baseTheme = EditorView.baseTheme({
   ".cm-o-replacement": {
     display: "inline-block",
     width: ".5em",
-    height: ".5em",
+    height: "auto",
     borderRadius: ".25em",
     textAlign: "left"
   },
@@ -188,6 +188,7 @@ function App() // Här körs appen
           <img src="/src/Squeezy_LaTex_logo2.svg" alt="Logo" />
         </div>
         <div className="dropdown-container">
+          
           {symbols.map((symbolObject, index) => (
             // Create a "dropdown" for each object
             <div key={index} className="dropdown">

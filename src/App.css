@@ -65,6 +65,8 @@
   text-align: left;
   font-size: large;
   margin: auto;
+  height: auto;
+  min-height: 7em;
 }
 /* Styling for the outer container */
 .dropdown-container {
