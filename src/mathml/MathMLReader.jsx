@@ -2,6 +2,7 @@ import { MathMLToLaTeX } from 'mathml-to-latex';
 import { symbol } from 'prop-types';
 import React from "react";
 import symbols from '../Symbols';
+import { encode } from 'punycode';
 
 class MathHTMLComponent extends React.Component
 {
@@ -25,31 +26,6 @@ const semanticsSelector = "#latex-container span span span.katex-mathml math sem
 let mathMLList = []
 let mathHTMLComponents = []
 
-function mathMLToLatexInterpreter(child, code)
-{
-    if (child.children.length != 0)
-        return null;
-
-    const outerHTML = "<math>" + child.outerHTML + "</math>";        
-    if (MathMLToLaTeX.convert(outerHTML) == code)
-        return child;
-
-    return null
-}
-
-function mathMLToSpanInterpreter(child)
-{
-    if (mathMLList.length == 0 || child.children.length != 0)
-        return null;
-
-    if (child.textContent == mathMLList[0].textContent)
-    {
-        mathMLList.shift();
-        return child;
-    }
-    return null;
-}
-
 function getChildrenWithInterpreter(root, list, interpreter, ...args)
 {
     for (let i = 0; i < root.children.length; i++) 
@@ -57,12 +33,12 @@ function getChildrenWithInterpreter(root, list, interpreter, ...args)
         const child = root.children[i]
         //if (child.children.length == 0) //Is a text element
         {
-            const result = interpreter(child, args)
+            const result = interpreter(child, ...args)
             if (result != null)
                 list.push(result)
         }
 
-        getChildrenWithInterpreter(child, list, interpreter, args);
+        getChildrenWithInterpreter(child, list, interpreter, ...args);
     }
 
     return list;
@@ -70,11 +46,14 @@ function getChildrenWithInterpreter(root, list, interpreter, ...args)
 
 function getAllMathMLElements()
 {
-    const semantics = document.querySelector("#root span span span.katex-mathml semantics");
-    if (semantics == null) //No eqution being shown.
+    const latexContainer = document.querySelector("#latex-container");
+    if (latexContainer == null)
         return [];
-
-    return getChildrenWithInterpreter(semantics, [], (child) => 
+    const math = latexContainer.getElementsByTagName("math")[0]
+    if (math == null) //No eqution being shown.
+        return [];
+        
+    return getChildrenWithInterpreter(math, [], (child) => 
     {
         const ignoreList = [
             "mrow",
@@ -89,25 +68,17 @@ function getAllMathMLElements()
     });
 }
 
-function getMathMLElementsByCode(code) 
-{
-    const semantics = document.querySelector("#latex-container span span span.katex-mathml semantics");
-    if (semantics == null) //No eqution being shown.
-        return [];
-
-    return getChildrenWithInterpreter(semantics, [], mathMLToLatexInterpreter, code);
-}
-
 function getAllSpanElements() 
 {
-    const base = document.querySelector("#latex-container span span span.katex-html span");
-    if (base == null) //No eqution being shown.
-        return [];
+    //const base = document.querySelector("#latex-container span span span.katex-html span");//#latex-container span mjx-container mjx-math
+    const math = document.querySelector("#latex-container span mjx-container mjx-math");
+    if (math == null) //No eqution being shown.
+        return [];  
 
-    const list = getChildrenWithInterpreter(base, [], (child) => 
+    const list = getChildrenWithInterpreter(math, [], (child) => 
     {
-        const text = child.textContent.replace(/\u200B/g,'') // Removes big funny whitespace chars
-        if (child.children.length == 0 && text != "")
+        let text = child.textContent.replace(/\u200B/g,'') // Removes big funny whitespace chars
+         if (text != "none")
         {
             //console.log("code: " + child.textContent.charCodeAt(0) + ": " + child.textContent)
             return child;
@@ -118,14 +89,35 @@ function getAllSpanElements()
     return list;
 }
 
-function getSpanElementsByCode(code) 
+function getAllMatchingMjxMathMLElements()
 {
-    const base = document.querySelector("#latex-container span span span.katex-html span");
-    if (base == null) //No eqution being shown.
+    let mathMLElements = getAllMathMLElements()
+    if (mathMLElements == [])
+        return [];
+    
+    const mjxMath = document.querySelector("#latex-container span mjx-container mjx-math");
+    if (mjxMath == null)
         return [];
 
-    mathMLList = getMathMLElementsByCode(code); //Slow and stupid
-    const list = getChildrenWithInterpreter(base, [], mathMLToSpanInterpreter)
+    //console.log(mathMLElements)
+
+    const list = getChildrenWithInterpreter(mjxMath, [], (child, mathMLElements) =>
+    {
+        if (mathMLElements.length == 0)
+            return null;
+
+        const mlTag = "MJX-" + mathMLElements[0].tagName.toUpperCase()
+        const mjxTag = child.tagName;
+        if (mjxTag == mlTag)
+        {
+            mathMLElements.shift()
+            return child
+        }
+        return null
+    }, mathMLElements)
+
+    console.log(list)
+
     return list;
 }
 
@@ -133,10 +125,20 @@ let startAA;
 
 function createMathHTMLComponent(element, index)
 {
-    //const outerHTML = "<math>" + child.outerHTML + "</math>";        
-    const code = MathMLToLaTeX.convert("<math><mi>" + element.textContent + "</mi></math>"); //Bruh
-    //console.log(code)
-    //const textContent = "\\pi"
+    //const outerHTML = "<math>" + child.outerHTML + "</math>";   
+    let text = "";
+    let code = "";
+    if (element.children.length > 0 && element.children[0].tagName == "MJX-C")
+    {
+        for (let i = 0; i < element.children.length; i++)
+        {
+            text = getComputedStyle(element.children[i], ':before').getPropertyValue('content').replaceAll('"', "")
+            code = MathMLToLaTeX.convert("<math><mi>" + text + "</mi></math>"); //Bruh  TODO FIX!!!!
+        }
+
+        return;
+    }
+
     let startStringIndex = laTeXString.indexOf(code)
     let endStringIndex = -1
     //console.log("AA: " + startAA)
@@ -161,6 +163,8 @@ function createMathHTMLComponent(element, index)
     startIndex = {startStringIndex}
     endIndex = {endStringIndex}
     code={code} />
+
+    console.log(e)
 
     mathHTMLComponents.push(e)
     return (
@@ -195,12 +199,12 @@ function renderMathHTMLComponents(string)
     mathHTMLComponents = []
     laTeXString = string
     startAA = 0;
+    console.log("DJHSOAI")
     return (
         <div className='MathHTMLComponents'>
-            { getAllSpanElements().map(createMathHTMLComponent) }
+            { getAllMatchingMjxMathMLElements().map(createMathHTMLComponent) }
         </div>
     )
 }
 
-export {getMathMLElementsByCode, getSpanElementsByCode, getAllSpanElements, semanticsSelector, 
-    renderMathHTMLComponents, getAllMathHTMLComponents};
+export {getAllSpanElements, semanticsSelector, renderMathHTMLComponents, getAllMathHTMLComponents};

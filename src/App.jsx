@@ -5,6 +5,7 @@ import React from "react";
 import Latex from 'react-latex-next'
 import 'katex/dist/katex.min.css'
 import CodeMirror from '@uiw/react-codemirror';
+import { MathJax, MathJaxContext } from "better-react-mathjax";
 
 import {EditorView} from "@codemirror/view"
 
@@ -107,7 +108,7 @@ function App() // Här körs appen
   //runs after render
   useEffect(() => 
   {
-    MathMLReader.renderMathHTMLComponents(equationString)
+    //MathMLReader.renderMathHTMLComponents(equationString)
     const __latex = document.querySelector("#latex-container span.__Latex__")
     if (__latex != null && __latex.children.length == 0)
     {
@@ -254,10 +255,19 @@ function App() // Här körs appen
     document.body.removeChild(element);
   } 
 
+  function onMathJaxLoad()
+  {
+    console.log(document.querySelector("#latex-container span mjx-container mjx-math"))
+    MathMLReader.renderMathHTMLComponents(equationString)
+  }
+
+  const config = {
+    loader: { load: ["input/asciimath"] },
+  };
 
   return (
     <>
-      <div>
+      <MathJaxContext config={config}>
         <div className='logo'>
           <img src="/src/Squeezy_LaTex_logo2.svg" alt="Logo" />
         </div>
@@ -275,14 +285,14 @@ function App() // Här körs appen
           {<CodeMirror theme={baseTheme} onChange={onEquationChanged} readOnly={false} id="equation-input" className='text-box' value={equationString}/>}
         </div>
         <div id='latex-container'>
-          <Latex>{String.raw`$${equationString}$`}</Latex>
+          <MathJax dynamic onTypeset={onMathJaxLoad}>{"\\(" + equationString + "\\)"}</MathJax>
           {/*MathMLReader.renderMathHTMLComponents(equationString)*/}
           <div id='latex-caret'></div>
         </div>
         <div className='Buttons'> 
         <button type="button" onClick={onDownloadButtonClicked}>Download</button>
         </div>
-      </div>
+      </MathJaxContext>
 
     </>
   );
