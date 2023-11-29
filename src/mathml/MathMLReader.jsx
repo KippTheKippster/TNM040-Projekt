@@ -29,7 +29,7 @@ function mathMLToSpanInterpreter(child)
     return null;
 }
 
-function getChildrenWithSymbol(root, list, interpreter, ...args)
+function getChildrenWithInterpreter(root, list, interpreter, ...args)
 {
     for (let i = 0; i < root.children.length; i++) 
     {
@@ -41,10 +41,31 @@ function getChildrenWithSymbol(root, list, interpreter, ...args)
                 list.push(result)
         }
 
-        getChildrenWithSymbol(child, list, interpreter, args);
+        getChildrenWithInterpreter(child, list, interpreter, args);
     }
 
     return list;
+}
+
+function getAllMathMLElements()
+{
+    const semantics = document.querySelector("#root span span span.katex-mathml semantics");
+    if (semantics == null) //No eqution being shown.
+        return [];
+
+    return getChildrenWithInterpreter(semantics, [], (child) => 
+    {
+        const ignoreList = [
+            "mrow",
+            "annotation",
+            "mstyle"
+        ]
+
+        if (ignoreList.includes(child.tagName))
+            return null
+
+        return child
+    });
 }
 
 function getMathMLElementsByCode(code) 
@@ -53,7 +74,7 @@ function getMathMLElementsByCode(code)
     if (semantics == null) //No eqution being shown.
         return [];
 
-    return getChildrenWithSymbol(semantics, [], mathMLToLatexInterpreter, code);
+    return getChildrenWithInterpreter(semantics, [], mathMLToLatexInterpreter, code);
 }
 
 function getAllSpanElements() 
@@ -62,7 +83,7 @@ function getAllSpanElements()
     if (base == null) //No eqution being shown.
         return [];
 
-    const list = getChildrenWithSymbol(base, [], (child) => 
+    const list = getChildrenWithInterpreter(base, [], (child) => 
     {
         const text = child.textContent.replace(/\u200B/g,'') // Removes big funny whitespace chars
         if (child.children.length == 0 && text != "")
@@ -83,8 +104,8 @@ function getSpanElementsByCode(code)
         return [];
 
     mathMLList = getMathMLElementsByCode(code); //Slow and stupid
-    const list = getChildrenWithSymbol(base, [], mathMLToSpanInterpreter)
+    const list = getChildrenWithInterpreter(base, [], mathMLToSpanInterpreter)
     return list;
 }
 
-export {getMathMLElementsByCode, getSpanElementsByCode, getAllSpanElements, semanticsSelector};
+export {getMathMLElementsByCode, getSpanElementsByCode, getAllSpanElements, getAllMathMLElements, semanticsSelector};

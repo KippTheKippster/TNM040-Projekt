@@ -8,6 +8,8 @@ import CodeMirror from '@uiw/react-codemirror';
 
 import {EditorView} from "@codemirror/view"
 
+//TODO try to use LatexToMathML and render MathML because react-latex-next is big poo poo
+
 let baseTheme = EditorView.baseTheme({
   ".cm-o-replacement": {
     display: "inline-block",
@@ -45,7 +47,7 @@ function App() // Här körs appen
 { 
   console.log("App called");
 
-  const [equationString, setEquationString] = useState("")
+  const [equationString, setEquationString] = useState("\\huge\\frac{\\pi + x^2}{2}")
   const [recentElements, setRecentElements] = useState([]);
   const [elementIndex, setElementIndex] = useState(0)
 
@@ -81,6 +83,7 @@ function App() // Här körs appen
         __latex.textContent = __latex.textContent.slice(0, -1);
       }
     }
+    addLaTeXCaretIndex(0);
     document.addEventListener('keydown', onKeyDown);
     return () => {
       document.removeEventListener('keydown', onKeyDown);
@@ -89,12 +92,13 @@ function App() // Här körs appen
 
   function addLaTeXCaretIndex(add)
   {
-    const elements = MathMLReader.getAllSpanElements()
+    const elements = MathMLReader.getAllMathMLElements()
+    console.log(elements)
     let index = Math.min(Math.max(elementIndex + add, 0), elements.length - 1)
-    console.log(index)
     if (index != elementIndex) //Stupid?
       setElementIndex(index);
 
+    console.log(index)
     drawLaTeXCaret(elements[index])    
   }
 
@@ -112,14 +116,15 @@ function App() // Här körs appen
     let rect = element.getBoundingClientRect();
 
     let h = (rect.bottom - rect.top)
-    let w = Math.max(h / 20, 1);
+    let w = 1/* Math.max(h / 20, 1);*/
     let x = window.scrollX + rect.right;
     let y = window.scrollY + rect.top;
 
     caret.style.minWidth = w + "px";
     caret.style.minHeight = h + "px";
-    caret.style.left = x + "px";
-    caret.style.top = y + "px"
+    caret.style.left = Math.round(x) + "px";
+    caret.style.top = Math.round(y) + "px";
+    caret.style.animation = "none";
   }
 
   function onEquationChanged(e)
@@ -149,13 +154,6 @@ function App() // Här körs appen
     downloadText("SqueezyLatextEquation", equationString)
   }
 
-  function onMathmlClicked()
-  {
-    const elements = MathMLReader.getSpanElementsByCode("\\pi");
-    console.log("Got elenemts: ");
-    console.log(elements);
-  }
-
   function downloadText(filename, text) {   
     var element = document.createElement('a');
     element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(equationString));
@@ -180,52 +178,8 @@ function App() // Här körs appen
 
   return (
     <>
-    
-   
-      <div>
-        <div className='logo'>
-          <img src="/src/Squeezy_LaTex_logo2.svg" alt="Logo" />
-        </div>
-        <div className="dropdown-container">
-          {symbols.map((symbolObject, index) => (
-            // Create a "dropdown" for each object
-            <div key={index} className="dropdown">
-              {/* The button for the dropdown displays the name of the object */}
-              <button className="dropbtn">
-                {/* Display the first symbol underneath the name */}
-                {symbolObject.symbols.length > 0 && (
-                  <Latex>{String.raw`$${symbolObject.symbols[0][0]}$`}</Latex>
-                )}
-                <br />
-                {symbolObject.name}
-              </button>
-              {/* This div will contain the dropdown content */}
-              <div className="dropdown-content">
-                {/* Call the function to render dropdown content */}
-                {renderDropdownContent(symbolObject)}
-              </div>
-            </div>
-          ))}
-          <div className="recent-elements">
-              {recentElements.map((element, index) => (
-              <button key={index} onClick={() => onInsertButtonPressed(element)}>
-                {<Latex>{String.raw`$${element}$`}</Latex>}
-              </button>
-            ))}
-          </div>
-        </div>
-        <div id='text-box-container'>
-          {<CodeMirror theme={baseTheme} onChange={onEquationChanged} readOnly={false} id="equation-input" className='text-box' value={equationString}/>}
-        </div>
-        <div id='latex-container'>
-          <Latex>{String.raw`$${equationString}$`}</Latex>
-          <div id='latex-caret'></div>
-        </div>
-        <div className='Buttons'> 
-        <button type="button" onClick={onDownloadButtonClicked}>Download</button>
-        </div>
-      </div>
-
+    <Latex>{String.raw`$${equationString}$`}</Latex>
+    <div id='latex-caret'></div>  
     </>
   );
 
