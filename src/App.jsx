@@ -13,8 +13,6 @@ import {EditorView} from "@codemirror/view"
 let baseTheme = EditorView.baseTheme({
   ".cm-o-replacement": {
     display: "inline-block",
-    width: ".5em",
-    height: ".5em",
     borderRadius: ".25em",
     textAlign: "left"
   },
@@ -42,6 +40,36 @@ document.addEventListener('click', function(e) {  //Listens to clicked html elem
 */
 
 let prevClickedTarget = null;
+let laTeXCaretAtEnd = false;
+
+const renderDropdownContent = (symbolObject) => {
+  return symbolObject.symbols.map((symbol, index) => (
+    <button key={index} onClick={() => onInsertButtonPressed(symbol[0])}>
+      {/* Display the symbol using the Latex component */}
+      {<Latex>{String.raw`$${symbol[0]}$`}</Latex>}
+    </button>
+  ));
+};
+
+const buttons = symbols.map((symbolObject, index) => (
+  // Create a "dropdown" for each object
+  <div key={index} className="dropdown">
+    {/* The button for the dropdown displays the name of the object */}
+    <button className="dropbtn">
+      {/* Display the first symbol underneath the name */}
+      {symbolObject.symbols.length > 0 && (
+        <Latex>{String.raw`$${symbolObject.symbols[0][0]}$`}</Latex>
+      )}
+      <br />
+      {symbolObject.name}
+    </button>
+    {/* This div will contain the dropdown content */}
+    <div className="dropdown-content">
+      {/* Call the function to render dropdown content */}
+      {renderDropdownContent(symbolObject)}
+    </div>
+  </div>
+))
 
 function App() // Här körs appen
 { 
@@ -62,6 +90,14 @@ function App() // Här körs appen
     {
       addLaTeXCaretIndex(-1);
     }
+    else if (event.code == "Backspace")
+    {
+      removeLaTeXText();
+    }
+    else if (event.key.length == 1)
+    {
+      addLaTexText(event.key)
+    }
   }
 
 
@@ -71,6 +107,7 @@ function App() // Här körs appen
   //runs after render
   useEffect(() => 
   {
+    MathMLReader.renderMathHTMLComponents(equationString)
     const __latex = document.querySelector("#latex-container span.__Latex__")
     if (__latex != null && __latex.children.length == 0)
     {
@@ -83,7 +120,10 @@ function App() // Här körs appen
         __latex.textContent = __latex.textContent.slice(0, -1);
       }
     }
-    addLaTeXCaretIndex(0);
+    if (!laTeXCaretAtEnd)
+      addLaTeXCaretIndex(0)
+    else 
+      addLaTeXCaretIndex(99999) //Bruh
     document.addEventListener('keydown', onKeyDown);
     return () => {
       document.removeEventListener('keydown', onKeyDown);
@@ -92,9 +132,9 @@ function App() // Här körs appen
 
   function addLaTeXCaretIndex(add)
   {
-    const elements = MathMLReader.getAllMathMLElements()
-    console.log(elements)
+    const elements = MathMLReader.getAllMathHTMLComponents()
     let index = Math.min(Math.max(elementIndex + add, 0), elements.length - 1)
+    laTeXCaretAtEnd = index == elements.length - 1;
     if (index != elementIndex) //Stupid?
       setElementIndex(index);
 
@@ -105,7 +145,6 @@ function App() // Här körs appen
   function drawLaTeXCaret(element)
   {
     const caret = document.getElementById("latex-caret");
-
     if (element == null)
     {
       caret.style.minWidth = 0 + "px";
@@ -113,18 +152,61 @@ function App() // Här körs appen
       return;
     }
 
-    let rect = element.getBoundingClientRect();
+    //let rect = element.getBoundingClientRect();
 
-    let h = (rect.bottom - rect.top)
-    let w = 1/* Math.max(h / 20, 1);*/
-    let x = window.scrollX + rect.right;
-    let y = window.scrollY + rect.top;
+    //let h = (rect.bottom - rect.top)
+    //let w = Math.max(h / 20, 1);
+    //let x = window.scrollX + rect.right;
+    //let y = window.scrollY + rect.top;
+    const props = element.props
+    let h = props.h
+    let w = 1
+    let x = props.x + props.w
+    let y = props.y
 
     caret.style.minWidth = w + "px";
     caret.style.minHeight = h + "px";
-    caret.style.left = Math.round(x) + "px";
-    caret.style.top = Math.round(y) + "px";
-    caret.style.animation = "none";
+    caret.style.left = x + "px";
+    caret.style.top = y + "px"
+  }
+
+  function addLaTexText(text)
+  {
+    if (document.activeElement.tagName != "BODY")
+      return;
+
+    let startIndex = equationString.length
+    const element = MathMLReader.getAllMathHTMLComponents()[elementIndex]
+    console.log(element)
+    if (element != null)
+      startIndex = element.props.endIndex
+
+    const newString = 
+      equationString.substring(0, startIndex) + 
+      text + 
+      equationString.substring(startIndex)
+
+    setEquationString(newString)
+  }
+
+  function removeLaTeXText()
+  {
+    if (document.activeElement.tagName != "BODY")
+      return;
+
+    const element = MathMLReader.getAllMathHTMLComponents()[elementIndex]
+    if (element == null)
+    {
+      setEquationString(equationString.substring(0, equationString.length - 1))
+      return
+    }
+
+    //console.log(element)
+    const newString = 
+      equationString.substring(0, element.props.startIndex) + 
+      equationString.substring(element.props.endIndex)
+
+    setEquationString(newString)
   }
 
   function onEquationChanged(e)
@@ -154,6 +236,11 @@ function App() // Här körs appen
     downloadText("SqueezyLatextEquation", equationString)
   }
 
+  function onMathmlClicked()
+  {
+    const elements = MathMLReader.getSpanElementsByCode("\\pi");
+  }
+
   function downloadText(filename, text) {   
     var element = document.createElement('a');
     element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(equationString));
@@ -167,19 +254,36 @@ function App() // Här körs appen
     document.body.removeChild(element);
   } 
 
-  const renderDropdownContent = (symbolObject) => {
-    return symbolObject.symbols.map((symbol, index) => (
-      <button key={index} onClick={() => onInsertButtonPressed(symbol[0])}>
-        {/* Display the symbol using the Latex component */}
-        {<Latex>{String.raw`$${symbol[0]}$`}</Latex>}
-      </button>
-    ));
-  };
 
   return (
     <>
-    <Latex>{String.raw`$${equationString}$`}</Latex>
-    <div id='latex-caret'></div>  
+      <div>
+        <div className='logo'>
+          <img src="/src/Squeezy_LaTex_logo2.svg" alt="Logo" />
+        </div>
+        <div className="dropdown-container">
+          {buttons}
+          <div className="recent-elements">
+              {recentElements.map((element, index) => (
+              <button key={index} onClick={() => onInsertButtonPressed(element)}>
+                {<Latex>{String.raw`$${element}$`}</Latex>}
+              </button>
+            ))}
+          </div>
+        </div>
+        <div id='text-box-container'>
+          {<CodeMirror theme={baseTheme} onChange={onEquationChanged} readOnly={false} id="equation-input" className='text-box' value={equationString}/>}
+        </div>
+        <div id='latex-container'>
+          <Latex>{String.raw`$${equationString}$`}</Latex>
+          {/*MathMLReader.renderMathHTMLComponents(equationString)*/}
+          <div id='latex-caret'></div>
+        </div>
+        <div className='Buttons'> 
+        <button type="button" onClick={onDownloadButtonClicked}>Download</button>
+        </div>
+      </div>
+
     </>
   );
 

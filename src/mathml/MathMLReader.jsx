@@ -1,8 +1,29 @@
 import { MathMLToLaTeX } from 'mathml-to-latex';
 import { symbol } from 'prop-types';
+import React from "react";
+import symbols from '../Symbols';
+
+class MathHTMLComponent extends React.Component
+{
+    render() {
+        console.log(this.props)
+        const style = 
+        {
+            minWidth: this.props.w + "px",
+            minHeight: this.props.h + "px",
+            left: this.props.x + "px",
+            top: this.props.y + "px"
+        }
+
+        return (
+            <div className='MathHTMLComponent' style={style} key={this.props.key}></div>
+        )
+    }
+}
 
 const semanticsSelector = "#latex-container span span span.katex-mathml math semantics";
 let mathMLList = []
+let mathHTMLComponents = []
 
 function mathMLToLatexInterpreter(child, code)
 {
@@ -108,4 +129,78 @@ function getSpanElementsByCode(code)
     return list;
 }
 
-export {getMathMLElementsByCode, getSpanElementsByCode, getAllSpanElements, getAllMathMLElements, semanticsSelector};
+let startAA;
+
+function createMathHTMLComponent(element, index)
+{
+    //const outerHTML = "<math>" + child.outerHTML + "</math>";        
+    const code = MathMLToLaTeX.convert("<math><mi>" + element.textContent + "</mi></math>"); //Bruh
+    //console.log(code)
+    //const textContent = "\\pi"
+    let startStringIndex = laTeXString.indexOf(code)
+    let endStringIndex = -1
+    //console.log("AA: " + startAA)
+    if (startStringIndex > -1)
+    {
+        startStringIndex += startAA;
+        endStringIndex = code.length + startStringIndex
+        startAA += code.length
+        laTeXString = laTeXString.substring(code.length)
+    }
+
+    //console.log("start: " + startStringIndex)
+    //console.log("end: " + endStringIndex)
+    let rect = element.getBoundingClientRect();
+    const e = <MathHTMLComponent 
+    w = {rect.right - rect.left}
+    h = {rect.bottom - rect.top} 
+    x = {window.scrollX + rect.left}
+    y = {window.scrollY + rect.top} 
+    key={index}
+    textContent = {element.textContent}
+    startIndex = {startStringIndex}
+    endIndex = {endStringIndex}
+    code={code} />
+
+    mathHTMLComponents.push(e)
+    return (
+        e
+    )
+}
+
+/*
+    {
+        [
+            "w"= w, 
+            "h"= h, 
+            "x"= x, 
+            "y"= y,
+            "key"= index,
+            "textContent"= element.textContent,
+            "startIndex"= startStringIndex, "endIndex"= endStringIndex,
+            "code"= code
+        ]
+    }/>
+    */
+
+function getAllMathHTMLComponents()
+{
+    return mathHTMLComponents;
+}
+
+let laTeXString = ""
+
+function renderMathHTMLComponents(string)
+{
+    mathHTMLComponents = []
+    laTeXString = string
+    startAA = 0;
+    return (
+        <div className='MathHTMLComponents'>
+            { getAllSpanElements().map(createMathHTMLComponent) }
+        </div>
+    )
+}
+
+export {getMathMLElementsByCode, getSpanElementsByCode, getAllSpanElements, semanticsSelector, 
+    renderMathHTMLComponents, getAllMathHTMLComponents};
