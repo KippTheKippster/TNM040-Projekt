@@ -156,6 +156,7 @@ function App() // Här körs appen
     console.log(elements);
   }
 
+  // Download LaTeX as text
   function downloadText(filename, text) {   
     var element = document.createElement('a');
     element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(equationString));
@@ -222,7 +223,7 @@ function App() // Här körs appen
           <div id='latex-caret'></div>
         </div>
         <div className='Buttons'> 
-        <button type="button" onClick={onDownloadButtonClicked}>Download</button>
+        <button onClick={() => downloadText("SqueezyLatextEquation.txt", equationString)}>Download as text file</button>
         </div>
       </div>
 
