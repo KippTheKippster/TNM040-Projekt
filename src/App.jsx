@@ -5,6 +5,8 @@ import { MathJax, MathJaxContext } from "better-react-mathjax";
 
 function App()
 { 
+  const [equationString, setEquationString] = useState("\\frac{}{}")
+
   useEffect(() => 
   {
     let a = document.querySelector("#root span mjx-container mjx-assistive-mml mjx-container mjx-assistive-mml math msup mn")
@@ -14,21 +16,15 @@ function App()
   const config = {
     loader: { load: ["input/asciimath"] },
   };
-  return (
-    <MathJaxContext config={config}>
-      <h2>Basic MathJax example with Latex</h2>
-      {<MathJax>{"\\(\\int\\frac{x}{2}  \\)"}</MathJax>}
-      <MathJax>
-        <math>
 
-        <mi>x</mi>
-        <msup>
-          <mn>2</mn>
-          <mn>12</mn>
-        </msup>
-        </math>
-      </MathJax>
+  return (
+    <div>
+    <h2>Basic MathJax example with Latex</h2>
+    <MathJaxContext config={config}>
+      {<MathJax hideUntilTypeset={"every"} dynamic>{"\\(" + equationString + "\\)"}</MathJax>}
     </MathJaxContext>
+    <textarea name="E" id="" cols="30" rows="10" value={equationString} onChange={(e) => {setEquationString(e.target.value)}}></textarea>
+    </div>
   );
 }
 
