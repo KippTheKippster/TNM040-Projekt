@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react'
+import { React, useState, useEffect, ReactDOM } from 'react'
+import ReactDOMServer from 'react-dom/server'
+
 import './App.css'
-import React from "react";
 //import { MathComponent } from "mathjax-react";
 import Latex from 'react-latex-next'
 import 'katex/dist/katex.min.css'
@@ -72,14 +73,13 @@ const buttons = symbols.map((symbolObject, index) => (
   </div>
 ))
 
-function App() // Här körs appen
+function App()
 { 
   console.log("App called");
 
-  const [equationString, setEquationString] = useState("\\huge\\frac{\\pi + x^2}{2}")
+  const [equationString, setEquationString] = useState("\\frac{\\pi + x^2}{2}")
   const [recentElements, setRecentElements] = useState([]);
   const [elementIndex, setElementIndex] = useState(0)
-
 
   function onKeyDown(event)
   {
@@ -121,10 +121,7 @@ function App() // Här körs appen
         __latex.textContent = __latex.textContent.slice(0, -1);
       }
     }
-    if (!laTeXCaretAtEnd)
-      addLaTeXCaretIndex(0)
-    else 
-      addLaTeXCaretIndex(99999) //Bruh
+
     document.addEventListener('keydown', onKeyDown);
     return () => {
       document.removeEventListener('keydown', onKeyDown);
@@ -159,11 +156,10 @@ function App() // Här körs appen
     //let w = Math.max(h / 20, 1);
     //let x = window.scrollX + rect.right;
     //let y = window.scrollY + rect.top;
-    const props = element.props
-    let h = props.h
+    let h = element.h
     let w = 1
-    let x = props.x + props.w
-    let y = props.y
+    let x = element.x + element.w
+    let y = element.y
 
     caret.style.minWidth = w + "px";
     caret.style.minHeight = h + "px";
@@ -180,7 +176,7 @@ function App() // Här körs appen
     const element = MathMLReader.getAllMathHTMLComponents()[elementIndex]
     console.log(element)
     if (element != null)
-      startIndex = element.props.endIndex
+      startIndex = element.endIndex
 
     const newString = 
       equationString.substring(0, startIndex) + 
@@ -204,8 +200,8 @@ function App() // Här körs appen
 
     //console.log(element)
     const newString = 
-      equationString.substring(0, element.props.startIndex) + 
-      equationString.substring(element.props.endIndex)
+      equationString.substring(0, element.startIndex) + 
+      equationString.substring(element.endIndex)
 
     setEquationString(newString)
   }
@@ -257,8 +253,16 @@ function App() // Här körs appen
 
   function onMathJaxLoad()
   {
-    console.log(document.querySelector("#latex-container span mjx-container mjx-math"))
-    MathMLReader.renderMathHTMLComponents(equationString)
+    const elements = MathMLReader.renderMathHTMLComponents(equationString)
+    const latexContainer = document.getElementById("latex-container")
+    if (!laTeXCaretAtEnd)
+      addLaTeXCaretIndex(0)
+    else 
+      addLaTeXCaretIndex(99999) //Bruh
+    if (latexContainer == null || ReactDOM == null)
+      return
+    
+    //latexContainer.innerHTML += ReactDOMServer.renderToString(elements)
   }
 
   const config = {
