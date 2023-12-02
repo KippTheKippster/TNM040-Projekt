@@ -73,13 +73,15 @@ const buttons = symbols.map((symbolObject, index) => (
   </div>
 ))
 
+let currentCaretTarget = null
+let mathHTMLRoot = null
+
 function App()
 { 
   console.log("App called");
 
   const [equationString, setEquationString] = useState("\\frac{\\pi + x^2}{2}")
   const [recentElements, setRecentElements] = useState([]);
-  const [elementIndex, setElementIndex] = useState(0)
 
   function onKeyDown(event)
   {
@@ -102,10 +104,6 @@ function App()
   }
 
 
-  //document.removeEventListener('keydown', onKeydown); //Javascript big pee pee poo poo
-  //document.addEventListener('keydown', onKeydown, true);
-
-  //runs after render
   useEffect(() => 
   {
     //MathMLReader.renderMathHTMLComponents(equationString)
@@ -130,14 +128,91 @@ function App()
 
   function addLaTeXCaretIndex(add)
   {
-    const elements = MathMLReader.getAllMathHTMLComponents()
-    let index = Math.min(Math.max(elementIndex + add, 0), elements.length - 1)
-    laTeXCaretAtEnd = index == elements.length - 1;
-    if (index != elementIndex) //Stupid?
-      setElementIndex(index);
+    if (mathHTMLRoot == null)
+      return
 
-    console.log(index)
-    drawLaTeXCaret(elements[index])    
+    if (currentCaretTarget == null)
+      currentCaretTarget = mathHTMLRoot
+
+    if (add < 0)
+    {
+      left()
+    }
+    else if (add > 0)
+    {
+      right()
+    }
+
+    if (currentCaretTarget == null)
+      currentCaretTarget = mathHTMLRoot
+
+    console.log(currentCaretTarget.tagName)
+    console.log(currentCaretTarget)
+
+    drawLaTeXCaret(currentCaretTarget)    
+
+    function left()
+    {
+      if (currentCaretTarget.children.length > 0)
+      {
+        currentCaretTarget = currentCaretTarget.children[0]
+      }
+      else
+      {
+        leftWithoutChildren()
+      }
+
+      if (currentCaretTarget.skip == true)
+        left()
+    }
+
+    function leftWithoutChildren()
+    {
+      const parent = currentCaretTarget.parent;
+      if (parent == null)
+        return 
+      const index = parent.children.indexOf(currentCaretTarget)
+      if (index < parent.children.length - 1)
+      {
+        currentCaretTarget = parent.children[index + 1]
+      }
+      else
+      {
+        currentCaretTarget = parent
+        leftWithoutChildren()
+      }
+    }
+
+    function right()
+    {
+      const parent = currentCaretTarget.parent;
+      if (parent == null)
+        return 
+      const index = parent.children.indexOf(currentCaretTarget)
+
+      console.log(index + " : " + parent.children.length)
+      if (index <= 0)
+      {
+        currentCaretTarget = parent
+      }
+      else
+      {
+        currentCaretTarget = parent.children[index - 1]
+        rightWithChildren()
+      }
+
+      if (currentCaretTarget.skip == true)
+        right()
+    }
+
+    function rightWithChildren() //Bad name!!
+    {
+      if (currentCaretTarget.children.length > 0)
+      {
+        currentCaretTarget = currentCaretTarget.children[currentCaretTarget.children.length - 1]
+        rightWithChildren()
+      }
+    }
   }
 
   function drawLaTeXCaret(element)
@@ -150,12 +225,6 @@ function App()
       return;
     }
 
-    //let rect = element.getBoundingClientRect();
-
-    //let h = (rect.bottom - rect.top)
-    //let w = Math.max(h / 20, 1);
-    //let x = window.scrollX + rect.right;
-    //let y = window.scrollY + rect.top;
     let h = element.h
     let w = 1
     let x = element.x + element.w
@@ -169,6 +238,7 @@ function App()
 
   function addLaTexText(text)
   {
+    /*
     if (document.activeElement.tagName != "BODY")
       return;
 
@@ -184,10 +254,12 @@ function App()
       equationString.substring(startIndex)
 
     setEquationString(newString)
+    */
   }
 
   function removeLaTeXText()
   {
+    /*
     if (document.activeElement.tagName != "BODY")
       return;
 
@@ -204,6 +276,7 @@ function App()
       equationString.substring(element.endIndex)
 
     setEquationString(newString)
+    */
   }
 
   function onEquationChanged(e)
@@ -253,16 +326,11 @@ function App()
 
   function onMathJaxLoad()
   {
-    const elements = MathMLReader.renderMathHTMLComponents(equationString)
-    const latexContainer = document.getElementById("latex-container")
+    mathHTMLRoot = MathMLReader.getRootMathHTMLComponent(equationString)
     if (!laTeXCaretAtEnd)
       addLaTeXCaretIndex(0)
     else 
-      addLaTeXCaretIndex(99999) //Bruh
-    if (latexContainer == null || ReactDOM == null)
-      return
-    
-    //latexContainer.innerHTML += ReactDOMServer.renderToString(elements)
+      addLaTeXCaretIndex(99999) //Bruh    
   }
 
   const config = {

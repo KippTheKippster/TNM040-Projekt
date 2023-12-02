@@ -93,8 +93,6 @@ function getAllMatchingMjxMathMLElements()
     let mathMLElements = getAllMathMLElements()
     if (mathMLElements == [])
         return [];
-
-    console.log(mathMLElements)
     
     const mjxMath = document.querySelector("#latex-container span mjx-container mjx-math");
     if (mjxMath == null)
@@ -110,7 +108,6 @@ function getAllMatchingMjxMathMLElements()
             return null;
 
         const mlTag = "MJX-" + mathMLElements[0].tagName.toUpperCase()
-        console.log(mjxTag + " : " + mlTag)
         if (mjxTag == mlTag)
         {
             const element = mathMLElements.shift()
@@ -127,7 +124,6 @@ let startAA;
 
 function addMathTHMLComponentToTree(root, list)
 {
-    console.log("Adding: " + root.childrenLength + " : " + root.tagName)
     if (root.tagName == "MJX-MERROR")
         return null
 
@@ -137,7 +133,12 @@ function addMathTHMLComponentToTree(root, list)
             return null
 
         const child = createMathHTMLComponent(list.shift(), 0)
-        root.children.push(child)
+        if (root.flipChildren == true)
+            root.children.unshift(child)
+        else    
+            root.children.push(child)
+
+        child.parent = root
         addMathTHMLComponentToTree(child, list)
     }
 
@@ -159,7 +160,6 @@ function createMathHTMLComponent(element)
 
     let startStringIndex = laTeXString.indexOf(code)
     let endStringIndex = -1
-    //console.log("AA: " + startAA)
     if (startStringIndex > -1)
     {
         startStringIndex += startAA;
@@ -172,10 +172,8 @@ function createMathHTMLComponent(element)
     if (mathMLElement != null)
         childrenLength = mathMLElement.childElementCount 
 
-    //console.log("start: " + startStringIndex)
-    //console.log("end: " + endStringIndex)
     let rect = mjxElement.getBoundingClientRect();
-    const e = {
+    let e = {
         w: rect.right - rect.left,
         h: rect.bottom - rect.top,
         x: window.scrollX + rect.left,
@@ -186,40 +184,54 @@ function createMathHTMLComponent(element)
         code: code,
         childrenLength: childrenLength,
         children: [],
-        tagName: mjxElement.tagName
+        parent: null,
+        tagName: mjxElement.tagName,
+        flipChildren: true,
+        skip: false
     }
 
-    mathHTMLComponents.push(e)
+    e = changeToTagSpecificSettings(e)
+
     return (
         e
     )
 }
 
-function getAllMathHTMLComponents()
+function changeToTagSpecificSettings(element)
 {
-    return mathHTMLComponents;
+    switch(element.tagName)
+    {
+        case("MJX-MROW"):
+        {
+            element.skip = true
+            break
+        }
+        case("MJX-MFRAC"):
+        {
+            element.flipChildren = false
+            break
+        }
+        default:
+            break;
+    }
+
+    return element
 }
 
 let laTeXString = ""
 
-function renderMathHTMLComponents(string)
+function getRootMathHTMLComponent(string)
 {
     mathHTMLComponents = []
     laTeXString = string
     startAA = 0;
     let elements = getAllMatchingMjxMathMLElements()
-    console.log(elements)
     if (elements.length == 0)
         return
 
     const root = createMathHTMLComponent(elements.shift())
     const tree = (addMathTHMLComponentToTree(root, elements))
-    console.log(tree)
-    //return (
-    //    <div className='MathHTMLComponents'>
-    //        { getAllMatchingMjxMathMLElements().map(createMathHTMLComponent) }
-    //    </div>
-    //)
+    return tree
 }
 
-export {getAllSpanElements, semanticsSelector, renderMathHTMLComponents, getAllMathHTMLComponents};
+export {getAllSpanElements, semanticsSelector, getRootMathHTMLComponent};
