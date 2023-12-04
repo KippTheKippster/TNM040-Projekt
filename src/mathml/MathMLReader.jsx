@@ -22,10 +22,6 @@ class MathHTMLComponent extends React.Component
     }
 }
 
-const semanticsSelector = "#latex-container span span span.katex-mathml math semantics";
-let mathMLList = []
-let mathHTMLComponents = []
-
 function getChildrenWithInterpreter(root, list, interpreter, ...args)
 {
     for (let i = 0; i < root.children.length; i++) 
@@ -122,7 +118,7 @@ function getAllMatchingMjxMathMLElements()
 
 let startAA;
 
-function addMathTHMLComponentToTree(root, list)
+function addMathComponentToTree(root, list, index)
 {
     if (root.tagName == "MJX-MERROR")
         return null
@@ -132,20 +128,25 @@ function addMathTHMLComponentToTree(root, list)
         if (list.length == 0)
             return null
 
-        const child = createMathHTMLComponent(list.shift(), 0)
+        const child = createMathComponent(list.shift(), 0)
         if (root.flipChildren == true)
             root.children.unshift(child)
         else    
             root.children.push(child)
 
         child.parent = root
-        addMathTHMLComponentToTree(child, list)
+        child.id = i
+        child.index = index
+        child.name =  child.tagName.toLowerCase() + "-" + index + "-" + child.id //TODO ugly
+        child.path = root.path + "/" + child.name
+        index++
+        addMathComponentToTree(child, list, index)
     }
 
     return root
 }
 
-function createMathHTMLComponent(element)
+function createMathComponent(element)
 {
     //const outerHTML = "<math>" + child.outerHTML + "</math>";   
     let text = "";
@@ -178,16 +179,18 @@ function createMathHTMLComponent(element)
         h: rect.bottom - rect.top,
         x: window.scrollX + rect.left,
         y: window.scrollY + rect.top,
-        textContent: mjxElement.textContent,
         startIndex: startStringIndex,
         endIndex: endStringIndex,
         code: code,
         childrenLength: childrenLength,
         children: [],
         parent: null,
-        tagName: mjxElement.tagName,
+        tagName: mjxElement.tagName.substring(4),
         flipChildren: true,
-        skip: false
+        skip: false,
+        path: [],
+        id: 0,
+        name: ""
     }
 
     e = changeToTagSpecificSettings(e)
@@ -201,15 +204,30 @@ function changeToTagSpecificSettings(element)
 {
     switch(element.tagName)
     {
-        case("MJX-MROW"):
+        case("MATH"):
+        {
+            element.skip = true;
+            break;
+        }
+        case("MROW"):
         {
             element.skip = true
             break
         }
-        case("MJX-MFRAC"):
+        case("MFRAC"):
         {
             element.flipChildren = false
             break
+        }
+        case("MTR"):
+        {
+            element.skip = true;
+            break;
+        }
+        case("MTD"):
+        {
+            element.skip = true;
+            break;
         }
         default:
             break;
@@ -220,18 +238,40 @@ function changeToTagSpecificSettings(element)
 
 let laTeXString = ""
 
-function getRootMathHTMLComponent(string)
+function getRootMathComponent(string)
 {
-    mathHTMLComponents = []
     laTeXString = string
     startAA = 0;
     let elements = getAllMatchingMjxMathMLElements()
     if (elements.length == 0)
         return
 
-    const root = createMathHTMLComponent(elements.shift())
-    const tree = (addMathTHMLComponentToTree(root, elements))
+    const root = createMathComponent(elements.shift())
+    root.path = "math"
+    root.name = "math"
+    const tree = (addMathComponentToTree(root, elements, 0))
     return tree
 }
 
-export {getAllSpanElements, semanticsSelector, getRootMathHTMLComponent};
+function getElementByPath(root, path)   
+{
+    if (path.length > 0 && path[0] == root.name)
+    {
+        path.shift()
+        if (path.length == 0)
+        {
+            return root
+        }
+    }
+
+    for (let i = 0; i < root.children.length; i++)
+    {
+        const element = getElementByPath(root.children[i], path)
+        if (element != null)
+            return element
+    }
+
+    return null
+}
+
+export {getRootMathComponent, getElementByPath};

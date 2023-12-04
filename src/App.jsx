@@ -74,7 +74,10 @@ const buttons = symbols.map((symbolObject, index) => (
 ))
 
 let currentCaretTarget = null
-let mathHTMLRoot = null
+let mathRoot = null
+
+//Not working: \int_{1}^{2}{x^2dx}
+
 
 function App()
 { 
@@ -128,11 +131,20 @@ function App()
 
   function addLaTeXCaretIndex(add)
   {
-    if (mathHTMLRoot == null)
+    if (mathRoot == null)
       return
 
     if (currentCaretTarget == null)
-      currentCaretTarget = mathHTMLRoot
+    {
+      if (mathRoot.children.length > 0)
+        currentCaretTarget = mathRoot.children[0]
+    }
+    else
+    {
+      currentCaretTarget = MathMLReader.getElementByPath(mathRoot, currentCaretTarget.path.split('/')) //Updates to new values
+    }
+
+    //console.log(currentCaretTarget)
 
     if (add < 0)
     {
@@ -142,12 +154,6 @@ function App()
     {
       right()
     }
-
-    if (currentCaretTarget == null)
-      currentCaretTarget = mathHTMLRoot
-
-    console.log(currentCaretTarget.tagName)
-    console.log(currentCaretTarget)
 
     drawLaTeXCaret(currentCaretTarget)    
 
@@ -186,11 +192,10 @@ function App()
     function right()
     {
       const parent = currentCaretTarget.parent;
-      if (parent == null)
+      if (parent == null || parent.tagName == "MATH")
         return 
       const index = parent.children.indexOf(currentCaretTarget)
 
-      console.log(index + " : " + parent.children.length)
       if (index <= 0)
       {
         currentCaretTarget = parent
@@ -224,6 +229,8 @@ function App()
       caret.style.minHeight = 0 + "px";  
       return;
     }
+
+    console.log("drawing: " + element.name)
 
     let h = element.h
     let w = 1
@@ -326,7 +333,7 @@ function App()
 
   function onMathJaxLoad()
   {
-    mathHTMLRoot = MathMLReader.getRootMathHTMLComponent(equationString)
+    mathRoot = MathMLReader.getRootMathComponent(equationString)
     if (!laTeXCaretAtEnd)
       addLaTeXCaretIndex(0)
     else 
