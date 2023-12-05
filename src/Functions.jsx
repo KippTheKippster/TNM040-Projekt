@@ -75,7 +75,7 @@ const summation = [
   ["\\sum{x}", -1],
   ["\\sum_{a}^{n}x", 0],
   ["\\sum_{a}x", 0],
-  ["\\prodx", 0],
+  ["\\prod{x}", 0],
   ["\\prod_{a}^{b}x", 0],
   ["\\prod_{a}x", 0],
   ["\\amalg{x}", -1],
