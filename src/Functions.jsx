@@ -31,9 +31,6 @@ const brackets = [
   ["\\csc{}", -1],
   ["\\sec{}", -1],
   ["\\cot{}", -1],
-  ["\\arccsc{}", -1],
-  ["\\arcsec{}", -1],
-  ["\\arccot{}", -1],
   ["\\sinh{}", -1],
   ["\\cosh{}", -1],
   ["\\tanh{}", -1],
@@ -47,8 +44,7 @@ const brackets = [
 ]
 
 const fractions_and_binomial = [
-  ["\\frac{}{}", -3],
-  ["\\sfrac{}\\sfrac{}", -10],
+  ["\\frac{a}{b}", -4],
   ["\\frac{dy}{dx}", 0],
   ["\\frac{\\Delta y}{\\Delta x}", 0],
   ["\\frac{\\partial y}{\\partial x}", 0],
@@ -58,43 +54,43 @@ const fractions_and_binomial = [
 ]
 
 const integral = [
-  ["\\intx", -1],
-  ["\\int_{a}^{b}x", -1],
-  ["\\iintx", -1],
-  ["\\iint_{a}^{b}x", -1],
-  ["\\iiintx", -1],
-  ["\\iiint_{a}^{b}x", -1],
-  ["\\ointx", -1],
-  ["\\oint_{a}^{b}x", -1],
-  ["\\oiintx", -1],
-  ["\\oiint_{a}^{b}x", -1],
-  ["\\oiiintx", -1],
-  ["\\oiiint_{a}^{b}x", -1],
-  ["\\box(24&dx)", 0],
-  ["\\box(24&dy)", 0],
-  ["\\box(24&d\\theta)", 0]
+  ["\\int{x}", -1],
+  ["\\int_{a}^{b}x", 0],
+  ["\\iint{x}", -1],
+  ["\\iint_{a}^{b}x", 0],
+  ["\\iiint{x}", -1],
+  ["\\iiint_{a}^{b}x", 0],
+  ["\\oint{x}", -1],
+  ["\\oint_{a}^{b}x", 0],
+  ["\\oiint{x}", -1],
+  ["\\oiint_{a}^{b}x", 0],
+  ["\\oiiint{x}", -1],
+  ["\\oiiint_{a}^{b}x", 0],
+  ["dx", 0],
+  ["dy", 0],
+  ["d\\theta", 0]
 ]
 
 const summation = [
-  ["\\sumx", 0],
+  ["\\sum{x}", -1],
   ["\\sum_{a}^{n}x", 0],
   ["\\sum_{a}x", 0],
   ["\\prodx", 0],
   ["\\prod_{a}^{b}x", 0],
   ["\\prod_{a}x", 0],
-  ["\\amalgx", 0],
+  ["\\amalg{x}", -1],
   ["\\amalg_{a}^{b}x", 0],
   ["\\amalg_{a}x", 0],
-  ["\\bigcupx", 0],
+  ["\\bigcup{x}", -1],
   ["\\bigcup_{a}^{b}x", 0],
   ["\\bigcup_{a}x", 0],
-  ["\\bigcapx", 0],
+  ["\\bigcap{x}", -1],
   ["\\bigcap_{a}^{b}x", 0],
   ["\\bigcap_{a}x", 0],
-  ["\\bigveex", 0],
+  ["\\bigvee{x}", -1],
   ["\\bigvee_{a}^{b}x", 0],
   ["\\bigvee_{a}x", 0],
-  ["\\bigwedgex", 0],
+  ["\\bigwedge{x}", -1],
   ["\\bigwedge_{a}^{b}x", 0],
   ["\\bigwedge_{a}x", 0],
   ["\\sum_{k}\\binom{n}{k}", 0],
@@ -112,26 +108,22 @@ const exponential = [
 ]
 
 const roots = [
-  ["\\sqrtx", -1],
+  ["\\sqrt{x}", -1],
   ["\\sqrt[a]{x}", -1],
   ["\\frac{-b\\pm\\sqrt{b^2-4ac}}{2a}", 0],
   ["\\sqrt{a^2+b^2}", 0]
 ]
 
 const limits_and_log = [
-  ["\\lim\\below{x\\rightarrow\\infty}{x}", -1],
-  ["\\min\\below{0\\le x\\le1}{x}", -1],
-  ["\\max\\below{0\\le x\\le1}{x}", -1],
+  ["\\lim_{x\\to\\infty} x", -1],
   ["\\ln{x}", -1],
   ["\\log_a{x}", -1],
-  ["\\log{x}", -1],
-  ["\\lim\\below{n\\rightarrow\\infty}{\\left(1+\\frac{1}{n}\\right)^n}", -1]
+  ["\\log{x}", -1]
 ]
 
 const accent = [
   ["\\dot{x}", -1],
   ["\\ddot{x}", -1],
-  ["\\dddot{x}", -1],
   ["\\hat{x}", -1],
   ["\\check{x}", -1],
   ["\\breve{x}", -1],
@@ -140,28 +132,7 @@ const accent = [
   ["\\bar{\\bar{x}}", -1],
   ["\\overbrace{x}", -1],
   ["\\underbrace{x}", -1],
-  ["\\buildrel{\\overbrace{x}}\\over{\\overbrace{x}}a", -1],
-  ["{\\underbrace{x}}\\belowa\\bigm", -1],
-  ["{\\gets\\belowx}", -1],
-  ["\\vec{x}", -1],
-  ["{\\buildrelx\\frac\\gets}", -1],
-  ["{\\buildrelx\\frac\\rightarrow}", -1],
-  ["\\hvec{x}", -1],
-  ["\\defeq", -1],
-  ["\\meq", -1],
-  ["\\Deltaeq", -1],
-  ["{\\rightarrow\\belowx}", -1],
-  ["{\\buildrelx\\frac\\gets}", -1],
-  ["{\\buildrelx\\frac\\rightarrow}", -1],
-  ["{\\Leftarrow\\belowx}", -1],
-  ["{\\Rightarrow\\belowx}", -1],
-  ["{\\buildrelx\\frac\\Leftarrow}", -1],
-  ["{\\buildrelx\\frac\\Rightarrow}", -1],
-  ["{\\leftrightarrow\\belowx}", -1],
-  ["{\\buildrelx\\frac\\leftrightarrow}", -1],
-  ["{\\Leftrightarrow\\belowx}", -1],
-  ["{\\buildrelx\\frac\\Leftrightarrow}", -1],
-  ["{\\buildrel y i e l d s\\frac\\rightarrow}", -1]
+  ["\\vec{x}", -1]
 ]
 
 const functions = [

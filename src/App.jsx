@@ -178,40 +178,57 @@ function App() // Här körs appen
     ));
   };
 
+  const renderDropdownContentFunctions = (functionObject) => {
+    return functionObject.functions.map((func, index) => (
+      <button key={index} onClick={() => onInsertButtonPressed(func[0])}>
+        {/* Display the function using the Latex component */}
+        {<Latex>{String.raw`$${func[0]}$`}</Latex>}
+      </button>
+    ));
+  };
+  
   return (
     <>
-    
-   
       <div>
         <img id="logo" src="/src/Squeezy_LaTex_logo2.svg" alt="Logo" />
         <div className="dropdown-container">
-          
           {symbols.map((symbolObject, index) => (
-            // Create a "dropdown" for each object
             <div key={index} className="dropdown">
-              {/* The button for the dropdown displays the name of the object */}
               <button className="dropbtn">
-                {/* Display the first symbol underneath the name */}
                 {symbolObject.symbols.length > 0 && (
                   <Latex>{String.raw`$${symbolObject.symbols[0][0]}$`}</Latex>
                 )}
                 <br />
                 {symbolObject.name}
               </button>
-              {/* This div will contain the dropdown content */}
               <div className="dropdown-content">
-                {/* Call the function to render dropdown content */}
                 {renderDropdownContent(symbolObject)}
               </div>
             </div>
           ))}
-          <div className="recent-elements">
-              {recentElements.map((element, index) => (
-              <button key={index} onClick={() => onInsertButtonPressed(element)}>
-                {<Latex>{String.raw`$${element}$`}</Latex>}
+        </div>
+        <div className="dropdown-container">
+          {functions.map((functionObject, index) => (
+            <div key={index} className="dropdown">
+              <button className="dropbtn">
+                {functionObject.functions.length > 0 && (
+                  <Latex>{String.raw`$${functionObject.functions[0][0]}$`}</Latex>
+                )}
+                <br />
+                {functionObject.name}
               </button>
-            ))}
-          </div>
+              <div className="dropdown-content">
+                {renderDropdownContentFunctions(functionObject)}
+              </div>
+            </div>
+          ))}
+        </div>
+        <div className="recent-elements">
+          {recentElements.map((element, index) => (
+            <button key={index} onClick={() => onInsertButtonPressed(element)}>
+              {<Latex>{String.raw`$${element}$`}</Latex>}
+            </button>
+          ))}
         </div>
         <div id='text-box-container'>
           {<CodeMirror theme={baseTheme} onChange={onEquationChanged} readOnly={false} id="equation-input" className='text-box' value={equationString}/>}
