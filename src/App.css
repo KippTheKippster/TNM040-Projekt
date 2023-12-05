@@ -1,7 +1,7 @@
 #root {
   max-width: 1280px;
   margin: auto;
-  padding: 2rem;
+  padding: 0;
   text-align: center;
 }
 
@@ -10,6 +10,8 @@
   width: 90%;
   margin-top: 1em;
   resize: none;
+  outline: black;
+  outline-width: 10px;
 }
 
 .text-box-container {
@@ -17,22 +19,10 @@
   flex-direction: column;
 }
 
-.logo {
-  display: flex;
-  align-items: center;
-  max-height: 50px;
-  margin: 7vw;
-  
+#logo{
+  width: 40%;
 }
 
-.logo img{
-  max-height: 80%;
-  max-width: 50%;
-  margin: auto;
-  
-  
-  
-}
 #latex-container{
   font-size: 40px;
   margin-top: 3vw;
@@ -43,9 +33,9 @@
   background-color: rgb(255, 255, 255);
   /*left: 200px;
   top: 200px;*/
-  min-height: 10px;
-  min-width: 10px;
-  animation: cursor-blink 1.5s steps(2) infinite;
+  min-height: 0px;
+  min-width: 0px;
+  /*animation: cursor-blink 1.5s steps(2) infinite;*/
 }
 
 @keyframes cursor-blink {
@@ -64,9 +54,14 @@
 #equation-input{
   text-align: left;
   font-size: large;
-  margin: auto;
+  margin: 1em;
   height: auto;
+  width: auto;
   min-height: 7em;
+}
+
+.download-button{
+  margin: 2em;
 }
 /* Styling for the outer container */
 .dropdown-container {

@@ -9,12 +9,11 @@ import CodeMirror from '@uiw/react-codemirror';
 import {EditorView} from "@codemirror/view"
 
 let baseTheme = EditorView.baseTheme({
-  ".cm-o-replacement": {
+  "&": {
     display: "inline-block",
-    width: ".5em",
     height: "auto",
-    borderRadius: ".25em",
-    textAlign: "left"
+    textAlign: "left",
+    border: "1px solid #c0c0c0",
   },
   "&light .cm-o-replacement": {
     backgroundColor: "#04c"
@@ -54,11 +53,11 @@ function App() // Här körs appen
   {
     if (event.code == "ArrowRight")
     {
-      addLaTeXCaretIndex(1);
+      //addLaTeXCaretIndex(1);
     }
     else if (event.code == "ArrowLeft")
     {
-      addLaTeXCaretIndex(-1);
+      //addLaTeXCaretIndex(-1);
     }
   }
 
@@ -81,9 +80,9 @@ function App() // Här körs appen
         __latex.textContent = __latex.textContent.slice(0, -1);
       }
     }
-    document.addEventListener('keydown', onKeyDown);
+    //document.addEventListener('keydown', onKeyDown);
     return () => {
-      document.removeEventListener('keydown', onKeyDown);
+      //  document.removeEventListener('keydown', onKeyDown);
     };
   });
 
@@ -184,9 +183,7 @@ function App() // Här körs appen
     
    
       <div>
-        <div className='logo'>
-          <img src="/src/Squeezy_LaTex_logo2.svg" alt="Logo" />
-        </div>
+        <img id="logo" src="/src/Squeezy_LaTex_logo2.svg" alt="Logo" />
         <div className="dropdown-container">
           
           {symbols.map((symbolObject, index) => (
@@ -224,7 +221,7 @@ function App() // Här körs appen
           <div id='latex-caret'></div>
         </div>
         <div className='Buttons'> 
-        <button onClick={() => downloadText("SqueezyLatextEquation.txt", equationString)}>Download as text file</button>
+        <button className='download-button' onClick={() => downloadText("SqueezyLatextEquation.txt", equationString)}>Download as text file</button>
         </div>
       </div>
 
