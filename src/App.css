@@ -5,8 +5,8 @@
   text-align: center;
 }
 
-.text-box {
-  height: 128px;
+.cm-editor {
+  /*height: 192px;*/
   width: 90%;
   margin-top: 1em;
   resize: none;
@@ -16,11 +16,8 @@
   border-color: #3c3c3c;
 }
 @media (prefers-color-scheme: light) {
-  .text-box {
-    
-    
+  .cm-editor {
     border-color: #213547;
-    
   }
 }
 .text-box-container {
