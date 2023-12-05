@@ -16,7 +16,7 @@ let baseTheme = EditorView.baseTheme({
     border: "1px solid #c0c0c0",
   },
   "&light .cm-o-replacement": {
-    backgroundColor: "#04c"
+    backgroundColor: "#222"
   },
   "&dark .cm-o-replacement": {
     backgroundColor: "#5bf"
@@ -182,7 +182,7 @@ function App() // Här körs appen
     <>
     
    
-      <div>
+      <div id='react-root'>
         <img id="logo" src="/src/Squeezy_LaTex_logo2.svg" alt="Logo" />
         <div className="dropdown-container">
           

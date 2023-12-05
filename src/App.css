@@ -3,6 +3,12 @@
   margin: auto;
   padding: 0;
   text-align: center;
+  min-height: 100%;
+}
+
+.download-button {
+  margin-top: auto;
+  align-self: flex-end;
 }
 
 .text-box {
@@ -12,6 +18,14 @@
   resize: none;
   outline: black;
   outline-width: 10px;
+  /*background-color: aqua;*/
+  border: 2px solid black;
+}
+
+@media (prefers-color-scheme: light) {
+  .text-box {
+    /*background-color: rgb(50, 250, 0);*/
+  }
 }
 
 .text-box-container {
@@ -60,9 +74,6 @@
   min-height: 7em;
 }
 
-.download-button{
-  margin: 2em;
-}
 /* Styling for the outer container */
 .dropdown-container {
   display: grid;
