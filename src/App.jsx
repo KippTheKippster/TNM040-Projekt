@@ -187,22 +187,33 @@ function App() // Här körs appen
       <div>
         <img id="logo" src="/src/Squeezy_LaTex_logo2.svg" alt="Logo" />
         <div className="dropdown-container">
+          
           {symbols.map((symbolObject, index) => (
+            // Create a "dropdown" for each object
             <div key={index} className="dropdown">
+              {/* The button for the dropdown displays the name of the object */}
               <button className="dropbtn">
+                {/* Display the first symbol underneath the name */}
                 {symbolObject.symbols.length > 0 && (
                   <Latex>{String.raw`$${symbolObject.symbols[0][0]}$`}</Latex>
                 )}
                 <br />
                 {symbolObject.name}
               </button>
+              {/* This div will contain the dropdown content */}
               <div className="dropdown-content">
+                {/* Call the function to render dropdown content */}
                 {renderDropdownContent(symbolObject)}
               </div>
             </div>
           ))}
-        </div>
-        <div className="dropdown-container">
+          <div className="recent-elements">
+              {recentElements.map((element, index) => (
+              <button key={index} onClick={() => onInsertButtonPressed(element)}>
+                {<Latex>{String.raw`$${element}$`}</Latex>}
+              </button>
+            ))}
+          </div>
           {functions.map((functionObject, index) => (
             <div key={index} className="dropdown">
               <button className="dropbtn">
@@ -216,13 +227,6 @@ function App() // Här körs appen
                 {renderDropdownContentFunctions(functionObject)}
               </div>
             </div>
-          ))}
-        </div>
-        <div className="recent-elements">
-          {recentElements.map((element, index) => (
-            <button key={index} onClick={() => onInsertButtonPressed(element)}>
-              {<Latex>{String.raw`$${element}$`}</Latex>}
-            </button>
           ))}
         </div>
         <div id='text-box-container'>
