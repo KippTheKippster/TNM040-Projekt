@@ -46,7 +46,7 @@ const brackets = [
   ["\\operatorname{arcsch{}}", -1]
 ]
 
-fractions_binomial = [
+const fractions_and_binomial = [
   ["\\frac{}{}", -3],
   ["\\sfrac{}\\sfrac{}", -10],
   ["\\frac{dy}{dx}", 0],
@@ -57,7 +57,7 @@ fractions_binomial = [
   ["a | b", -4]
 ]
 
-integral = [
+const integral = [
   ["\\intx", -1],
   ["\\int_{a}^{b}x", -1],
   ["\\iintx", -1],
@@ -75,7 +75,7 @@ integral = [
   ["\\box(24&d\\theta)", 0]
 ]
 
-summation = [
+const summation = [
   ["\\sumx", 0],
   ["\\sum_{a}^{n}x", 0],
   ["\\sum_{a}x", 0],
@@ -102,9 +102,7 @@ summation = [
   ["\\prod_{k=1}^{n}A_k", 0]
 ]
 
-
-
-exponential = [
+const exponential = [
   ["x^a", 0],
   ["x_a", 0],
   ["x_b^a", -2,],
@@ -113,16 +111,14 @@ exponential = [
   ["x^2", 0]
 ]
 
-
-roots = [
+const roots = [
   ["\\sqrtx", -1],
   ["\\sqrt[a]{x}", -1],
   ["\\frac{-b\\pm\\sqrt{b^2-4ac}}{2a}", 0],
   ["\\sqrt{a^2+b^2}", 0]
 ]
 
-
-limits_and_log = [
+const limits_and_log = [
   ["\\lim\\below{x\\rightarrow\\infty}{x}", -1],
   ["\\min\\below{0\\le x\\le1}{x}", -1],
   ["\\max\\below{0\\le x\\le1}{x}", -1],
@@ -132,7 +128,7 @@ limits_and_log = [
   ["\\lim\\below{n\\rightarrow\\infty}{\\left(1+\\frac{1}{n}\\right)^n}", -1]
 ]
 
-accent = [
+const accent = [
   ["\\dot{x}", -1],
   ["\\ddot{x}", -1],
   ["\\dddot{x}", -1],
@@ -168,17 +164,17 @@ accent = [
   ["{\\buildrel y i e l d s\\frac\\rightarrow}", -1]
 ]
 
-  const functions = [
-    { name: 'Brackets', functions: brackets },
-    { name: 'Trigonometry', functions: trigonometri },
-    { name: 'Fractions and Binomial', functions: fractions_and_binomial },
-    { name: 'Integral', functions: integral },
-    { name: 'Summation', functions: summation },
-    { name: 'Exponential', functions: exponential },
-    { name: 'Roots', functions: roots },
-    { name: 'Limits and Log', functions: limits_and_log },
-    { name: 'Accents', functions: accent },
-  ]
+const functions = [
+  { name: 'Brackets', functions: brackets },
+  { name: 'Trigonometry', functions: trigonometri },
+  { name: 'Fractions and Binomial', functions: fractions_and_binomial },
+  { name: 'Integral', functions: integral },
+  { name: 'Summation', functions: summation },
+  { name: 'Exponential', functions: exponential },
+  { name: 'Roots', functions: roots },
+  { name: 'Limits and Log', functions: limits_and_log },
+  { name: 'Accents', functions: accent },
+]
   
 
   export default functions;
