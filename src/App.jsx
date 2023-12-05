@@ -3,8 +3,12 @@ import './App.css'
 import React from "react";
 //import { MathComponent } from "mathjax-react";
 import Latex from 'react-latex-next'
-import 'katex/dist/katex.min.css'
 import CodeMirror from '@uiw/react-codemirror';
+
+import katex from 'katex';
+import 'katex/dist/katex.min.css'
+
+//import html2canvas from 'html2canvas';
 
 import {EditorView} from "@codemirror/view"
 
@@ -45,9 +49,10 @@ function App() // Här körs appen
 { 
   console.log("App called");
 
-  const [equationString, setEquationString] = useState("")
+  const [equationString, setEquationString] = useState('');
   const [recentElements, setRecentElements] = useState([]);
   const [elementIndex, setElementIndex] = useState(0)
+  //const [latex, setLatex] = useState('e^{i\\pi} + 1 = 0'); // Ett exempel på en LaTeX-sträng
 
 
   function onKeyDown(event)
@@ -170,6 +175,8 @@ function App() // Här körs appen
     document.body.removeChild(element);
   } 
 
+
+
   const renderDropdownContent = (symbolObject) => {
     return symbolObject.symbols.map((symbol, index) => (
       <button key={index} onClick={() => onInsertButtonPressed(symbol[0])}>
@@ -178,6 +185,128 @@ function App() // Här körs appen
       </button>
     ));
   };
+  /*
+// Funktion för att konvertera LaTeX till SVG
+const convertLatexToSVG = () => {
+  try {
+    return katex.renderToString(equationString, {
+      throwOnError: true,
+      displayMode: true,
+      output: 'svg',
+    });
+  } catch (error) {
+    console.error('Error converting LaTeX to SVG:', error);
+    alert('There was an error converting the LaTeX string to SVG.');
+    return '';
+  }
+};
+
+// Funktion för att ladda ner SVG
+const downloadSVG = (svgContent) => {
+  const filename = 'equation.svg';
+  const blob = new Blob([svgContent], { type: 'image/svg+xml;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const downloadLink = document.createElement('a');
+  downloadLink.href = url;
+  downloadLink.download = filename;
+  document.body.appendChild(downloadLink);
+  downloadLink.click();
+  document.body.removeChild(downloadLink);
+  URL.revokeObjectURL(url);
+};
+
+// Hanterare för nedladdningsknappen
+const handleDownloadSVG = () => {
+  const svgContent = convertLatexToSVG();
+  if (svgContent) {
+    downloadSVG(svgContent);
+  }
+*/
+/*
+// Funktion för att generera SVG från LaTeX
+const generateSVG = () => {
+  try {
+    // Använd KaTeX för att rendera LaTeX till SVG
+    return katex.renderToString(latex, {
+      throwOnError: true,
+      displayMode: true,
+      output: 'svg'
+    });
+  } catch (error) {
+    console.error('Error converting LaTeX to SVG:', error);
+    return '';
+  }
+};
+*/
+// Funktion för att ladda ner SVG
+const downloadSVG = () => {
+  const svgContent = generateSVG();
+  if (!svgContent) {
+    alert('Could not generate SVG.');
+    return;
+  }
+
+  // Skapa en Blob från SVG-strängen
+  const blob = new Blob([svgContent], { type: 'image/svg+xml;charset=utf-8' });
+  // Skapa en URL för Blobben
+  const url = URL.createObjectURL(blob);
+  // Skapa en ankare-tag för nedladdningen
+  const downloadLink = document.createElement('a');
+  downloadLink.href = url;
+  downloadLink.download = 'equation.svg';
+  document.body.appendChild(downloadLink);
+  downloadLink.click();
+  document.body.removeChild(downloadLink);
+  URL.revokeObjectURL(url);
+};
+
+
+
+
+
+function LatexToSVGDownloader() {
+  const [equationString, setEquationString] = useState('');
+
+  // Funktion för att konvertera LaTeX till SVG med KaTeX
+  const convertLatexToSVG = () => {
+    try {
+      return katex.renderToString(equationString, {
+        throwOnError: true,
+        displayMode: true,
+        output: 'svg'
+      });
+    } catch (error) {
+      console.error('Error converting LaTeX to SVG:', error);
+      return null;
+    }
+  };
+
+  // Funktion för att ladda ner SVG
+  const downloadSVG = (svgContent, filename = 'equation.svg') => {
+    const blob = new Blob([svgContent], { type: 'image/svg+xml;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const downloadLink = document.createElement('a');
+    downloadLink.href = url;
+    downloadLink.download = filename;
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
+    URL.revokeObjectURL(url);
+  };
+
+  // Funktion för att hantera konverteringen och initiera nedladdningen
+  const handleDownload = () => {
+    const svgContent = convertLatexToSVG();
+    if (svgContent) {
+      downloadSVG(svgContent);
+    } else {
+      alert('Invalid LaTeX input.');
+    }
+  };
+  
+
+}
+
 
   return (
     <>
@@ -225,6 +354,16 @@ function App() // Här körs appen
         <div className='Buttons'> 
         <button onClick={() => downloadText("SqueezyLatextEquation.txt", equationString)}>Download as text file</button>
         </div>
+        <div className="bla">
+      <textarea
+        value={Latex}
+        onChange={(e) => setLatex(e.target.value)}
+        placeholder="Enter LaTeX here"
+      />
+      <button onClick={downloadSVG}>
+        Download SVGd
+      </button>
+    </div>
       </div>
 
     </>
@@ -234,3 +373,5 @@ function App() // Här körs appen
 }
 
 export default App;
+
+//        <button onClick={(handleDownloadSVG) }>Download as SVG</button>
