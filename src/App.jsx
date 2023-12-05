@@ -9,17 +9,12 @@ import CodeMirror from '@uiw/react-codemirror';
 import {EditorView} from "@codemirror/view"
 
 let baseTheme = EditorView.baseTheme({
-  "&": {
+  ".cm-o-replacement": {
     display: "inline-block",
+    width: ".5em",
     height: "auto",
-    textAlign: "left",
-    border: "1px solid #c0c0c0",
-  },
-  "&light .cm-o-replacement": {
-    backgroundColor: "#04c"
-  },
-  "&dark .cm-o-replacement": {
-    backgroundColor: "#5bf"
+    borderRadius: ".25em",
+    textAlign: "left"
   }
 })
 
