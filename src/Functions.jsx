@@ -1,28 +1,13 @@
-const brackets = [
-  ["|", 0],
-  ["(\,", 0],
-  ["\\{", 0],
-  ["\\lceil", 0],
-  ["\\ulcorner", 0],
-  ["\\|", 0],
-  [")\,", 0],//maybe )\\,
-  ["\\}", 0],
-  ["\\rceil", 0],
-  ["\\urcorner", 0],
-  ["/", 0],
-  ["\\[\,", 0],//maybe \\[\\,
-  ["\\langle", 0],
-  ["\\lfloor", 0],
-  ["\\llcorner", 0],
-  ["\\backslash", 0],
-  ["\\]\,", 0],//maybe \\]\\,
-  ["\\rangle", 0],
-  ["\\rfloor", 0],
-  ["\\lrcorner", 0] 
+const matrix = [
+  ["\\begin{vmatrix}a & b\\\\ c&d\\end{vmatrix}", -26],
+  ["\\begin{Vmatrix}a & b\\\\ c&d\\end{Vmatrix}", -26],
+  ["\\begin{pmatrix}a & b\\\\ c&d\\end{pmatrix}", -26],
+  ["\\begin{bmatrix}a & b\\\\ c&d\\end{bmatrix}", -26],
+  ["\\begin{Bmatrix}a & b\\\\ c&d\\end{Bmatrix}", -26]
 ]
 
  const trigonometri = [
-  ["\\sin{}", -1],
+  ["\\sin{x}", -1],
   ["\\cos{}", -1],
   ["\\tan{}", -1],
   ["\\arcsin{}", -1],
@@ -55,17 +40,17 @@ const fractions_and_binomial = [
 
 const integral = [
   ["\\int{x}", -1],
-  ["\\int_{a}^{b}x", 0],
-  ["\\iint{x}", -1],
-  ["\\iint_{a}^{b}x", 0],
-  ["\\iiint{x}", -1],
-  ["\\iiint_{a}^{b}x", 0],
-  ["\\oint{x}", -1],
-  ["\\oint_{a}^{b}x", 0],
-  ["\\oiint{x}", -1],
-  ["\\oiint_{a}^{b}x", 0],
-  ["\\oiiint{x}", -1],
-  ["\\oiiint_{a}^{b}x", 0],
+  ["\\int_{a}^{b}", 0],
+  ["\\iint{}", -1],
+  ["\\iint_{a}^{b}", 0],
+  ["\\iiint{}", -1],
+  ["\\iiint_{a}^{b}", 0],
+  ["\\oint{}", -1],
+  ["\\oint_{a}^{b}", 0],
+  ["\\oiint{}", -1],
+  ["\\oiint_{a}^{b}", 0],
+  ["\\oiiint{}", -1],
+  ["\\oiiint_{a}^{b}", 0],
   ["dx", 0],
   ["dy", 0],
   ["d\\theta", 0]
@@ -73,28 +58,28 @@ const integral = [
 
 const summation = [
   ["\\sum{x}", -1],
-  ["\\sum_{a}^{n}x", 0],
-  ["\\sum_{a}x", 0],
-  ["\\prod{x}", 0],
-  ["\\prod_{a}^{b}x", 0],
-  ["\\prod_{a}x", 0],
-  ["\\amalg{x}", -1],
-  ["\\amalg_{a}^{b}x", 0],
-  ["\\amalg_{a}x", 0],
-  ["\\bigcup{x}", -1],
-  ["\\bigcup_{a}^{b}x", 0],
-  ["\\bigcup_{a}x", 0],
-  ["\\bigcap{x}", -1],
-  ["\\bigcap_{a}^{b}x", 0],
-  ["\\bigcap_{a}x", 0],
-  ["\\bigvee{x}", -1],
-  ["\\bigvee_{a}^{b}x", 0],
-  ["\\bigvee_{a}x", 0],
-  ["\\bigwedge{x}", -1],
-  ["\\bigwedge_{a}^{b}x", 0],
-  ["\\bigwedge_{a}x", 0],
+  ["\\sum_{a}^{n}", 0],
+  ["\\sum_{a}", 0],
+  ["\\prod{}", 0],
+  ["\\prod_{a}^{b}", 0],
+  ["\\prod_{a}", 0],
+  ["\\amalg{}", -1],
+  ["\\amalg_{a}^{b}", 0],
+  ["\\amalg_{a}", 0],
+  ["\\bigcup{}", -1],
+  ["\\bigcup_{a}^{b}", 0],
+  ["\\bigcup_{a}", 0],
+  ["\\bigcap{}", -1],
+  ["\\bigcap_{a}^{b}", 0],
+  ["\\bigcap_{a}", 0],
+  ["\\bigvee{}", -1],
+  ["\\bigvee_{a}^{b}", 0],
+  ["\\bigvee_{a}", 0],
+  ["\\bigwedge{}", -1],
+  ["\\bigwedge_{a}^{b}", 0],
+  ["\\bigwedge_{a}", 0],
   ["\\sum_{k}\\binom{n}{k}", 0],
-  ["\\sum_{i=0}^{n}x", 0],
+  ["\\sum_{i=0}^{n}", 0],
   ["\\prod_{k=1}^{n}A_k", 0]
 ]
 
@@ -115,10 +100,10 @@ const roots = [
 ]
 
 const limits_and_log = [
-  ["\\lim_{x\\to\\infty} x", -1],
-  ["\\ln{x}", -1],
-  ["\\log_a{x}", -1],
-  ["\\log{x}", -1]
+  ["\\lim_{x\\to\\infty}", -1],
+  ["\\ln{}", -1],
+  ["\\log_a{}", -1],
+  ["\\log{}", -1]
 ]
 
 const accent = [
@@ -136,7 +121,7 @@ const accent = [
 ]
 
 const functions = [
-  { name: 'Brackets', functions: brackets },
+  { name: 'Matrix', functions: matrix },
   { name: 'Trigonometry', functions: trigonometri },
   { name: 'Fractions and Binomial', functions: fractions_and_binomial },
   { name: 'Integral', functions: integral },

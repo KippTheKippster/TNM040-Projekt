@@ -89,6 +89,7 @@
 /* Unique styling for the button in each dropdown, otherwhise it uses "button"*/
 .dropbtn {
   font-size: 0.8em;
+  /*font-size: x-small;*/
 }
 
 /* Styling for the dropdown content */
@@ -127,12 +128,16 @@
   border: 2px solid #333; /* Add a 2px solid border with a darker color */
   padding: 10px; /* Add some padding to the container */
   min-height: 6em;
+  max-width: 12em;
 }
 
 .recent-elements button {
   /* Add any additional styles for the buttons here */
   width: 100%; /* Make buttons fill the grid cells */
   height: 100%; /* Make buttons fill the grid cells */
+  min-width: 3em;
+  max-width: 4em;
+  font-size: x-small;
 }
 
 /* Optional: Style for the scrollbar */

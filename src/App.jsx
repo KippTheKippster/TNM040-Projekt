@@ -164,20 +164,11 @@ function App() // Här körs appen
     document.body.removeChild(element);
   } 
 
-  const renderDropdownContent = (symbolObject) => {
-    return symbolObject.symbols.map((symbol, index) => (
-      <button key={index} onClick={() => onInsertButtonPressed(symbol[0])}>
-        {/* Display the symbol using the Latex component */}
-        {<Latex>{String.raw`$${symbol[0]}$`}</Latex>}
-      </button>
-    ));
-  };
-
-  const renderDropdownContentFunctions = (functionObject) => {
-    return functionObject.functions.map((func, index) => (
-      <button key={index} onClick={() => onInsertButtonPressed(func[0])}>
-        {/* Display the function using the Latex component */}
-        {<Latex>{String.raw`$${func[0]}$`}</Latex>}
+  const renderDropdownContent = (array) => {
+    return array.map((item, index) => (
+      <button key={index} onClick={() => onInsertButtonPressed(item[0])}>
+        {/* Display the item using the Latex component */}
+        {<Latex>{String.raw`$${item[0]}$`}</Latex>}
       </button>
     ));
   };
@@ -200,10 +191,9 @@ function App() // Här körs appen
                 <br />
                 {symbolObject.name}
               </button>
-              {/* This div will contain the dropdown content */}
               <div className="dropdown-content">
                 {/* Call the function to render dropdown content */}
-                {renderDropdownContent(symbolObject)}
+                {renderDropdownContent(symbolObject.symbols)}
               </div>
             </div>
           ))}
@@ -224,7 +214,7 @@ function App() // Här körs appen
                 {functionObject.name}
               </button>
               <div className="dropdown-content">
-                {renderDropdownContentFunctions(functionObject)}
+                {renderDropdownContent(functionObject.functions)}
               </div>
             </div>
           ))}
@@ -240,7 +230,6 @@ function App() // Här körs appen
         <button className='download-button' onClick={() => downloadText("SqueezyLatextEquation.txt", equationString)}>Download as text file</button>
         </div>
       </div>
-
     </>
   );
 

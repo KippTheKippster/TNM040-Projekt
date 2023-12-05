@@ -232,7 +232,27 @@ const other_symbols = [
   ["\\wp", 0],
   ["\\nabla", 0],
   ["\\Box", 0],
-  ["\\infty", 0]
+  ["\\infty", 0],
+  ["|", 0],
+  ["(\,", 0],
+  ["\\{", 0],
+  ["\\lceil", 0],
+  ["\\ulcorner", 0],
+  ["\\|", 0],
+  [")\,", 0],//maybe )\\,
+  ["\\}", 0],
+  ["\\rceil", 0],
+  ["\\urcorner", 0],
+  ["/", 0],
+  ["\\[\,", 0],//maybe \\[\\,
+  ["\\langle", 0],
+  ["\\lfloor", 0],
+  ["\\llcorner", 0],
+  ["\\backslash", 0],
+  ["\\]\,", 0],//maybe \\]\\,
+  ["\\rangle", 0],
+  ["\\rfloor", 0],
+  ["\\lrcorner", 0] 
 ]
 
 const symbols = [
