@@ -12,8 +12,17 @@
   resize: none;
   outline: black;
   outline-width: 10px;
+  border: 2px solid;
+  border-color: #3c3c3c;
 }
-
+@media (prefers-color-scheme: light) {
+  .text-box {
+    
+    
+    border-color: #213547;
+    
+  }
+}
 .text-box-container {
   display: flex;
   flex-direction: column;
