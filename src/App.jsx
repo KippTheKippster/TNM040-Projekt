@@ -48,7 +48,7 @@ const renderDropdownContent = (symbolObject) => {
   return symbolObject.symbols.map((symbol, index) => (
     <button key={index} onClick={() => onInsertButtonPressed(symbol[0])}>
       {/* Display the symbol using the Latex component */}
-      {<Latex>{String.raw`$${symbol[0]}$`}</Latex>}
+      {<MathJax>{String.raw`$${symbol[0]}$`}</MathJax>}
     </button>
   ));
 };
@@ -60,7 +60,7 @@ const buttons = symbols.map((symbolObject, index) => (
     <button className="dropbtn">
       {/* Display the first symbol underneath the name */}
       {symbolObject.symbols.length > 0 && (
-        <Latex>{String.raw`$${symbolObject.symbols[0][0]}$`}</Latex>
+        <MathJax>{String.raw`$${symbolObject.symbols[0][0]}$`}</MathJax>
       )}
       <br />
       {symbolObject.name}
@@ -311,8 +311,10 @@ function App()
   //download button funktion.. 
   function onDownloadButtonClicked(e) {
     const name = "SqueezyLatextEquation";
-    downloadText(name, equationString)
-    downloadAsSVG(name);
+    if (false)
+      downloadText(name, equationString)
+    else
+      downloadAsSVG(name);
   }
 
   function downloadText(filename) {   
@@ -355,7 +357,7 @@ function App()
   const config = {
     loader: 
     { 
-      load: ['input/tex-base', 'output/svg', 'ui/menu', '[tex]/require'] 
+      load: ['input/tex-full', 'output/svg', '[tex]/require'] 
     },
     tex:
     {
@@ -363,6 +365,8 @@ function App()
     },
     svg: 
     {
+      scale: 100,
+      minScale: 50,
     }
   };
 
@@ -377,7 +381,7 @@ function App()
           <div className="recent-elements">
               {recentElements.map((element, index) => (
               <button key={index} onClick={() => onInsertButtonPressed(element)}>
-                {<Latex>{String.raw`$${element}$`}</Latex>}
+                {<MathJax>{String.raw`$${element}$`}</MathJax>}
               </button>
             ))}
           </div>
