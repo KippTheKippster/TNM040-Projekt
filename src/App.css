@@ -26,7 +26,7 @@
 }
 
 #logo{
-  width: 40%;
+  width: 25%;
 }
 
 #latex-container{
@@ -91,7 +91,10 @@
   font-size: 0.8em;
   width: 8.3em;
   height: 4.5em;
-  /*font-size: x-small;*/
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Add this */
+  align-items: center;
 }
 
 /* Styling for the dropdown content */
@@ -128,8 +131,9 @@
   grid-template-rows: repeat(1, 1fr);    /* 1 rows */
   gap: 5px; /* Adjust the gap as needed */
   border: 2px solid #333; /* Add a 2px solid border with a darker color */
+  border-top: none; /* Remove the top border */
   padding: 10px; /* Add some padding to the container */
-  min-height: 2em;
+  height: 2em;
   /*max-width: 12em;*/
 }
 
