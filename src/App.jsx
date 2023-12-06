@@ -5,7 +5,6 @@ import React from "react";
 import Latex from 'react-latex-next'
 import 'katex/dist/katex.min.css'
 import CodeMirror from '@uiw/react-codemirror';
-import html2canvas from 'html2canvas'; // png  
 
 import { EditorView } from "@codemirror/view"
 import { MathJax, MathJaxContext } from "better-react-mathjax";
@@ -176,8 +175,12 @@ function App() // Här körs appen
 
     let image = new Image()
     image.addEventListener('load', () => { //Converts svg data to png data 
-      const width = res
-      const height = res
+      const svgWidth = svg.getAttribute("width").slice(0, -2)
+      const svgHeight = svg.getAttribute("height").slice(0, -2)
+      const length = Math.sqrt(Math.pow(svgWidth, 2) + Math.pow(svgHeight, 2))
+      const width = res * (svgWidth / length) //Bruh
+      const height = res * (svgHeight / length)
+      console.log(length + " : " + width + " : " + height)
       const canvas = document.createElement('canvas')
 
       canvas.setAttribute('width', width)
@@ -282,7 +285,7 @@ function App() // Här körs appen
         <div className='Buttons'>
           <button onClick={() => downloadText("SqueezyLatextEquation.txt", equationString)}>Download as text file</button>
           <button onClick={() => downloadPNG("SqueezyLatextEquation", 256)}>Download as PNG</button>
-          <button onClick={() => downloadSVG("SqueezyLatextEquation.txt")}>Download as SVG</button>
+          <button onClick={() => downloadSVG("SqueezyLatextEquation")}>Download as SVG</button>
 
         </div>
       </MathJaxContext>
