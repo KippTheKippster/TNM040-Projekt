@@ -252,7 +252,11 @@ const other_symbols = [
   ["\\]\,", 0],//maybe \\]\\,
   ["\\rangle", 0],
   ["\\rfloor", 0],
-  ["\\lrcorner", 0] 
+  ["\\lrcorner", 0],
+  ["\\dots", 0],
+  ["\\cdots", 0],
+  ["\\ddots", 0],
+  ["\\vdots", 0]
 ]
 
 const symbols = [

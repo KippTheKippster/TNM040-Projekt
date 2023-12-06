@@ -204,12 +204,14 @@ function App() // Här körs appen
             <div key={index} className="dropdown">
               {/* The button for the dropdown displays the name of the object */}
               <button className="dropbtn">
+              
                 {/* Display the first symbol underneath the name */}
                 {symbolObject.symbols.length > 0 && (
                   <Latex>{String.raw`$${symbolObject.symbols[0][0]}$`}</Latex>
                 )}
-                <br />
                 <h2>{symbolObject.name}</h2>
+                {/*<br />*/}
+                
               </button>
               <div className="dropdown-content">
                 {/* Call the function to render dropdown content */}
@@ -221,10 +223,10 @@ function App() // Här körs appen
           {functions.map((functionObject, index) => (
             <div key={index} className="dropdown">
               <button className="dropbtn">
+              
                 {functionObject.functions.length > 0 && (
                   <Latex>{String.raw`$${functionObject.functions[0][0]}$`}</Latex>
                 )}
-                <br />
                 <h2>{functionObject.name}</h2>
               </button>
               <div className="dropdown-content">
@@ -234,13 +236,13 @@ function App() // Här körs appen
           ))}
         </div>
         <div className="recent-elements">
-              <h2>Recents:</h2>
-              {recentElements.map((element, index) => (
-              <button key={index} onClick={() => onInsertButtonPressed(element)}>
-                {<Latex>{String.raw`$${element}$`}</Latex>}
-              </button>
-            ))}
-          </div>
+            <h2>Recents:</h2>
+            {recentElements.map((element, index) => (
+            <button key={index} onClick={() => onInsertButtonPressed(element)}>
+              {<Latex>{String.raw`$${element}$`}</Latex>}
+            </button>
+          ))}
+        </div>
         <div id='text-box-container'>
           {<CodeMirror theme={baseTheme} onChange={onEquationChanged} readOnly={false} id="equation-input" className='text-box' value={equationString}/>}
         </div>
