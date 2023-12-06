@@ -186,11 +186,12 @@ function App() // Här körs appen
             <div key={index} className="dropdown">
               {/* The button for the dropdown displays the name of the object */}
               <button className="dropbtn">
-              <h2>{symbolObject.name}</h2>
+              
                 {/* Display the first symbol underneath the name */}
                 {symbolObject.symbols.length > 0 && (
                   <Latex>{String.raw`$${symbolObject.symbols[0][0]}$`}</Latex>
                 )}
+                <h2>{symbolObject.name}</h2>
                 {/*<br />*/}
                 
               </button>
@@ -204,10 +205,11 @@ function App() // Här körs appen
           {functions.map((functionObject, index) => (
             <div key={index} className="dropdown">
               <button className="dropbtn">
-              <h2>{functionObject.name}</h2>
+              
                 {functionObject.functions.length > 0 && (
                   <Latex>{String.raw`$${functionObject.functions[0][0]}$`}</Latex>
                 )}
+                <h2>{functionObject.name}</h2>
               </button>
               <div className="dropdown-content">
                 {renderDropdownContent(functionObject.functions)}
