@@ -9,17 +9,12 @@ import CodeMirror from '@uiw/react-codemirror';
 import {EditorView} from "@codemirror/view"
 
 let baseTheme = EditorView.baseTheme({
-  "&": {
+  ".cm-o-replacement": {
     display: "inline-block",
+    width: ".5em",
     height: "auto",
-    textAlign: "left",
-    border: "1px solid #c0c0c0",
-  },
-  "&light .cm-o-replacement": {
-    backgroundColor: "#222"
-  },
-  "&dark .cm-o-replacement": {
-    backgroundColor: "#5bf"
+    borderRadius: ".25em",
+    textAlign: "left"
   }
 })
 
@@ -136,7 +131,7 @@ function App() // Här körs appen
       // Check if the symbol is already in the recent elements
       if (!prevElements.includes(symbol)) {
         // Add the new symbol to the beginning of the array
-        return [symbol, ...prevElements.slice(0, 5)]; // Keep only the latest 6 elements
+        return [symbol, ...prevElements.slice(0, 7)]; // Keep only the latest 8 elements
       }
       return prevElements;
     });
@@ -169,15 +164,15 @@ function App() // Här körs appen
     document.body.removeChild(element);
   } 
 
-  const renderDropdownContent = (symbolObject) => {
-    return symbolObject.symbols.map((symbol, index) => (
-      <button key={index} onClick={() => onInsertButtonPressed(symbol[0])}>
-        {/* Display the symbol using the Latex component */}
-        {<Latex>{String.raw`$${symbol[0]}$`}</Latex>}
+  const renderDropdownContent = (array) => {
+    return array.map((item, index) => (
+      <button key={index} onClick={() => onInsertButtonPressed(item[0])}>
+        {/* Display the item using the Latex component */}
+        {<Latex>{String.raw`$${item[0]}$`}</Latex>}
       </button>
     ));
   };
-
+  
   return (
     <>
     
@@ -185,7 +180,7 @@ function App() // Här körs appen
       <div id='react-root'>
         <img id="logo" src="/src/Squeezy_LaTex_logo2.svg" alt="Logo" />
         <div className="dropdown-container">
-          
+        <h2>Symbols:</h2>
           {symbols.map((symbolObject, index) => (
             // Create a "dropdown" for each object
             <div key={index} className="dropdown">
@@ -196,23 +191,38 @@ function App() // Här körs appen
                   <Latex>{String.raw`$${symbolObject.symbols[0][0]}$`}</Latex>
                 )}
                 <br />
-                {symbolObject.name}
+                <h2>{symbolObject.name}</h2>
               </button>
-              {/* This div will contain the dropdown content */}
               <div className="dropdown-content">
                 {/* Call the function to render dropdown content */}
-                {renderDropdownContent(symbolObject)}
+                {renderDropdownContent(symbolObject.symbols)}
               </div>
             </div>
           ))}
-          <div className="recent-elements">
+          <h2>Functions:</h2>
+          {functions.map((functionObject, index) => (
+            <div key={index} className="dropdown">
+              <button className="dropbtn">
+                {functionObject.functions.length > 0 && (
+                  <Latex>{String.raw`$${functionObject.functions[0][0]}$`}</Latex>
+                )}
+                <br />
+                <h2>{functionObject.name}</h2>
+              </button>
+              <div className="dropdown-content">
+                {renderDropdownContent(functionObject.functions)}
+              </div>
+            </div>
+          ))}
+        </div>
+        <div className="recent-elements">
+              <h2>Recents:</h2>
               {recentElements.map((element, index) => (
               <button key={index} onClick={() => onInsertButtonPressed(element)}>
                 {<Latex>{String.raw`$${element}$`}</Latex>}
               </button>
             ))}
           </div>
-        </div>
         <div id='text-box-container'>
           {<CodeMirror theme={baseTheme} onChange={onEquationChanged} readOnly={false} id="equation-input" className='text-box' value={equationString}/>}
         </div>
@@ -224,7 +234,6 @@ function App() // Här körs appen
         <button className='download-button' onClick={() => downloadText("SqueezyLatextEquation.txt", equationString)}>Download as text file</button>
         </div>
       </div>
-
     </>
   );
 

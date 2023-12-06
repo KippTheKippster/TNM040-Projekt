@@ -11,23 +11,21 @@
   align-self: flex-end;
 }
 
-.text-box {
-  height: 128px;
+.cm-editor {
+  /*height: 192px;*/
   width: 90%;
   margin-top: 1em;
   resize: none;
   outline: black;
   outline-width: 10px;
-  /*background-color: aqua;*/
-  border: 2px solid black;
+  border: 2px solid;
+  border-color: #3c3c3c;
 }
-
 @media (prefers-color-scheme: light) {
-  .text-box {
-    /*background-color: rgb(50, 250, 0);*/
+  .cm-editor {
+    border-color: #213547;
   }
 }
-
 .text-box-container {
   display: flex;
   flex-direction: column;
@@ -89,12 +87,14 @@
   position: relative;
   /*align-self: stretch;*/
   margin: auto;
-  
 }
 
 /* Unique styling for the button in each dropdown, otherwhise it uses "button"*/
 .dropbtn {
   font-size: 0.8em;
+  width: 8.3em;
+  height: 4.5em;
+  /*font-size: x-small;*/
 }
 
 /* Styling for the dropdown content */
@@ -108,6 +108,7 @@
   overflow-y: auto; /* Enable vertical scrolling if needed */
   border: 1px solid #ccc; /* Add a border for better visibility */
   display: none;
+  backdrop-filter: blur(10px);
   /*display: grid; /*add when trubbleshooting*/
 }
 
@@ -126,18 +127,22 @@
 
 .recent-elements {
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* 3 columns */
-  grid-template-rows: repeat(2, 1fr);    /* 2 rows */
+  grid-template-columns: repeat(9, 1fr); /* 9 columns */
+  grid-template-rows: repeat(1, 1fr);    /* 1 rows */
   gap: 5px; /* Adjust the gap as needed */
   border: 2px solid #333; /* Add a 2px solid border with a darker color */
   padding: 10px; /* Add some padding to the container */
-  min-height: 6em;
+  min-height: 2em;
+  /*max-width: 12em;*/
 }
 
 .recent-elements button {
   /* Add any additional styles for the buttons here */
   width: 100%; /* Make buttons fill the grid cells */
   height: 100%; /* Make buttons fill the grid cells */
+  /*min-width: 3em;
+  max-width: 4em;*/
+  font-size: x-small;
 }
 
 /* Optional: Style for the scrollbar */
