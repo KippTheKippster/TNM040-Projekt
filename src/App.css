@@ -13,17 +13,16 @@
 
 .cm-editor {
   /*height: 192px;*/
-  width: 90%;
+  margin: 0;
+  padding: 0;
   margin-top: 1em;
   resize: none;
-  outline: black;
-  outline-width: 10px;
   border: 2px solid;
-  border-color: #3c3c3c;
+  border-color: rgb(60, 60, 60);
 }
 @media (prefers-color-scheme: light) {
   .cm-editor {
-    border-color: #213547;
+    border-color: #697c89;
   }
 }
 .text-box-container {
@@ -66,9 +65,10 @@
 #equation-input{
   text-align: left;
   font-size: large;
-  margin: 1em;
+  margin: 0em;
+  margin-top: 1em;
   height: auto;
-  width: auto;
+  padding: 0;
   min-height: 7em;
 }
 

@@ -1,9 +1,9 @@
 const matrix = [
-  ["\\begin{vmatrix}a & b\\\\ c&d\\end{vmatrix}", -26],
-  ["\\begin{Vmatrix}a & b\\\\ c&d\\end{Vmatrix}", -26],
-  ["\\begin{pmatrix}a & b\\\\ c&d\\end{pmatrix}", -26],
-  ["\\begin{bmatrix}a & b\\\\ c&d\\end{bmatrix}", -26],
-  ["\\begin{Bmatrix}a & b\\\\ c&d\\end{Bmatrix}", -26]
+  ["\\begin{vmatrix}\na & b \\\\ \nc & d\n\\end{vmatrix}", -26],
+  ["\\begin{Vmatrix}\na & b \\\\ \nc & d\n\\end{Vmatrix}", -26],
+  ["\\begin{pmatrix}\na & b \\\\ \nc & d\n\\end{pmatrix}", -26],
+  ["\\begin{bmatrix}\na & b \\\\ \nc & d\n\\end{bmatrix}", -26],
+  ["\\begin{Bmatrix}\na & b \\\\ \nc & d\n\\end{Bmatrix}", -26],
 ]
 
  const trigonometri = [

@@ -121,8 +121,9 @@ function App() // Här körs appen
     setEquationString(String.raw`${e}`)
   }
 
-  function onInsertButtonPressed(symbol) {
-    const finalString = equationString + symbol;
+  function onInsertButtonPressed(symbol, prevString) {
+    console.log(prevString)
+    const finalString = prevString + symbol;
     //document.getElementById("equation-input").value = finalString;
     setEquationString(finalString);
     
@@ -135,6 +136,19 @@ function App() // Här körs appen
       }
       return prevElements;
     });
+  }
+
+
+  //download button funktion.. 
+  function onDownloadButtonClicked(e) {
+    downloadText("SqueezyLatextEquation", equationString)
+  }
+
+  function onMathmlClicked()
+  {
+    const elements = MathMLReader.getSpanElementsByCode("\\pi");
+    console.log("Got elenemts: ");
+    console.log(elements);
   }
 
   // Download LaTeX as text
@@ -151,30 +165,6 @@ function App() // Här körs appen
     document.body.removeChild(element);
   } 
 
-  function downloadSVG(filename)
-  {
-    const container = document.getElementById("latex-container")
-    const svgContent = container.getElementsByTagName("svg")[0]
-    var svgData = svgContent.outerHTML;
-    var svgBlob = new Blob([svgData], {type:"image/svg+xml;charset=utf-8"});
-    var svgUrl = URL.createObjectURL(svgBlob);
-    var downloadLink = document.createElement("a");
-    downloadLink.href = svgUrl;
-    downloadLink.download = filename;
-    document.body.appendChild(downloadLink);
-    downloadLink.click();
-    document.body.removeChild(downloadLink);
-  }
-
-  const renderDropdownContent = (array) => {
-    return array.map((item, index) => (
-      <button key={index} onClick={() => onInsertButtonPressed(item[0])}>
-        {/* Display the item using the Latex component */}
-        {<MathJax>{String.raw`$${item[0]}$`}</MathJax>}
-      </button>
-    ));
-  };
-  
   const config = {
     loader: 
     { 
@@ -193,6 +183,8 @@ function App() // Här körs appen
     //}
   };
 
+  console.log("EQ: " + equationString)
+
   return (
     <>
     <MathJaxContext 
@@ -201,40 +193,7 @@ function App() // Här körs appen
       src='https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js'
     >        
       <img id="logo" src="/src/Squeezy_LaTex_logo2.svg" alt="Logo" />
-      <div className="dropdown-container">
-        <h2>Symbols:</h2>
-          {symbols.map((symbolObject, index) => (
-            // Create a "dropdown" for each object
-            <div key={index} className="dropdown">
-              {/* The button for the dropdown displays the name of the object */}
-              <button className="dropbtn">
-                {/* Display the first symbol underneath the name */}
-                {symbolObject.symbols.length > 0 && (
-                  <MathJax>{String.raw`$${symbolObject.symbols[0][0]}$`}</MathJax>
-                )}
-                <h2>{symbolObject.name}</h2>
-              </button>
-              <div className="dropdown-content">
-                {/* Call the function to render dropdown content */}
-                {renderDropdownContent(symbolObject.symbols)}
-              </div>
-            </div>
-          ))}
-          <h2>Functions:</h2>
-          {functions.map((functionObject, index) => (
-            <div key={index} className="dropdown">
-              <button className="dropbtn">
-                {functionObject.functions.length > 0 && (
-                  <MathJax>{String.raw`$${functionObject.functions[0][0]}$`}</MathJax>
-                )}
-                <h2>{functionObject.name}</h2>
-              </button>
-              <div className="dropdown-content">
-                {renderDropdownContent(functionObject.functions)}
-              </div>
-            </div>
-          ))}
-        </div>
+      <DropdownContainer onInsertButtonPressed={onInsertButtonPressed} prevString={equationString}/>
         <div className="recent-elements">
               <h2>Recents:</h2>
               {recentElements.map((element, index) => (
@@ -247,13 +206,11 @@ function App() // Här körs appen
           {<CodeMirror theme={baseTheme} onChange={onEquationChanged} readOnly={false} id="equation-input" className='text-box' value={equationString}/>}
         </div>
         <div id='latex-container'>
-          <MathJax dynamic>{String.raw`$${"\\displaystyle" + equationString}$`}</MathJax>
+          <MathJax hideUntilTypeset={"every"}>{String.raw`$${"\\displaystyle" + equationString}$`}</MathJax>
           <div id='latex-caret'></div>
         </div>
         <div className='Buttons'> 
         <button className='download-button' onClick={() => downloadText("SqueezyLatextEquation.txt", equationString)}>Download as text file</button>
-        <button className='download-button' onClick={() => downloadSVG("SqueezyLatextEquation.txt")}>Download as SVG file</button>
-
       </div>
       </MathJaxContext>
     </>
@@ -261,5 +218,57 @@ function App() // Här körs appen
 
 
 }
+
+const RenderDropdownContent = memo(function RenderDropdownContent({array, fun, prevString}) {
+  return array.map((item, index) => (
+    <button key={index} onClick={() => fun(item[0], prevString)}>
+      {/* Display the item using the Latex component */}
+      {<MathJax>{String.raw`$${item[0]}$`}</MathJax>}
+    </button>
+  ));
+}, () => { return true});
+
+function DropdownContainer({onInsertButtonPressed, prevString})
+{
+  console.log("EEEEE: " + prevString)
+  return (
+    <div className="dropdown-container">
+      <h2>Symbols:</h2>
+        {symbols.map((symbolObject, index) => (
+          // Create a "dropdown" for each object
+          <div key={index} className="dropdown">
+            {/* The button for the dropdown displays the name of the object */}
+            <button className="dropbtn">
+              {/* Display the first symbol underneath the name */}
+              {symbolObject.symbols.length > 0 && (
+                <MathJax>{String.raw`$${symbolObject.symbols[0][0]}$`}</MathJax>
+              )}
+              <h2>{symbolObject.name}</h2>
+            </button>
+            <div className="dropdown-content">
+              {/* Call the function to render dropdown content */}
+              <RenderDropdownContent array={symbolObject.symbols} fun={onInsertButtonPressed} prevString = {prevString}/>
+            </div>
+          </div>
+        ))}
+        <h2>Functions:</h2>
+        {functions.map((functionObject, index) => (
+          <div key={index} className="dropdown">
+            <button className="dropbtn">
+              {functionObject.functions.length > 0 && (
+                <MathJax>{String.raw`$${functionObject.functions[0][0]}$`}</MathJax>
+              )}
+              <h2>{functionObject.name}</h2>
+            </button>
+            <div className="dropdown-content">
+              <RenderDropdownContent array={functionObject.functions} fun={onInsertButtonPressed} prevString={prevString}/>
+            </div>
+          </div>
+        ))}
+      </div>
+
+  )
+}
+
 
 export default App;
