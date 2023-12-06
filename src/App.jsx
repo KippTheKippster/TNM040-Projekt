@@ -1,24 +1,22 @@
 import { useState, useEffect } from 'react'
 import './App.css'
 import React from "react";
-//import { MathComponent } from "mathjax-react";
 import Latex from 'react-latex-next'
+
+//pngimport 'katex/dist/katex.min.css'
+//import katex from 'katex';
+
 import CodeMirror from '@uiw/react-codemirror';
-
-import katex from 'katex';
-import 'katex/dist/katex.min.css'
-
-//import html2canvas from 'html2canvas';
+import html2canvas from 'html2canvas'; // png  
 
 import {EditorView} from "@codemirror/view"
 
 let baseTheme = EditorView.baseTheme({
-  ".cm-o-replacement": {
+  "&": {
     display: "inline-block",
-    width: ".5em",
-    height: ".5em",
-    borderRadius: ".25em",
-    textAlign: "left"
+    height: "auto",
+    textAlign: "left",
+    border: "1px solid #c0c0c0",
   },
   "&light .cm-o-replacement": {
     backgroundColor: "#04c"
@@ -49,21 +47,21 @@ function App() // Här körs appen
 { 
   console.log("App called");
 
-  const [equationString, setEquationString] = useState('');
+  const [equationString, setEquationString] = useState("")
   const [recentElements, setRecentElements] = useState([]);
   const [elementIndex, setElementIndex] = useState(0)
-  //const [latex, setLatex] = useState('e^{i\\pi} + 1 = 0'); // Ett exempel på en LaTeX-sträng
+  const [showDropdown, setShowDropdown] = useState(false);
 
 
   function onKeyDown(event)
   {
     if (event.code == "ArrowRight")
     {
-      addLaTeXCaretIndex(1);
+      //addLaTeXCaretIndex(1);
     }
     else if (event.code == "ArrowLeft")
     {
-      addLaTeXCaretIndex(-1);
+      //addLaTeXCaretIndex(-1);
     }
   }
 
@@ -86,9 +84,9 @@ function App() // Här körs appen
         __latex.textContent = __latex.textContent.slice(0, -1);
       }
     }
-    document.addEventListener('keydown', onKeyDown);
+    //document.addEventListener('keydown', onKeyDown);
     return () => {
-      document.removeEventListener('keydown', onKeyDown);
+      //  document.removeEventListener('keydown', onKeyDown);
     };
   });
 
@@ -175,8 +173,6 @@ function App() // Här körs appen
     document.body.removeChild(element);
   } 
 
-
-
   const renderDropdownContent = (symbolObject) => {
     return symbolObject.symbols.map((symbol, index) => (
       <button key={index} onClick={() => onInsertButtonPressed(symbol[0])}>
@@ -185,138 +181,91 @@ function App() // Här körs appen
       </button>
     ));
   };
-  /*
-// Funktion för att konvertera LaTeX till SVG
-const convertLatexToSVG = () => {
+
+   // Download LaTeX as PNG
+  function downloadPNG(filename) {
+    const latexContainer = document.getElementById('equation');
+    html2canvas(latexContainer).then(canvas => {
+      const image = canvas.toDataURL("image/png");
+      const link = document.createElement('a');
+      link.download = filename + '.png';
+      link.href = image;
+      link.click();
+    });
+  }
+ /* 
+function removeKatexHtml(svgContent) {
+  // Create a temporary DOM element to manipulate the SVG content
+  let tempDiv = document.createElement('div');
+  tempDiv.innerHTML = svgContent;
+
+  // Find all elements with the class 'katex-html' and remove them
+  let katexHtmlElements = tempDiv.getElementsByClassName('katex-html');
+  while (katexHtmlElements[0]) {
+      katexHtmlElements[0].parentNode.removeChild(katexHtmlElements[0]);
+  }
+
+  // Return the modified SVG content
+  return tempDiv.innerHTML;
+}
+
+
+// This is the function that combines both steps and is triggered when the user clicks the download button
+
+function handleDownloadSVG(latexString) {
+  // Wrap the LaTeX string with the correct delimiters for display mode.
+  const wrappedLatexString = `${latexString}`;
+
   try {
-    return katex.renderToString(equationString, {
-      throwOnError: true,
+    const svgContentRaw = katex.renderToString(wrappedLatexString, {
+      throwOnError: true, // Let's throw an error to catch it for debugging
       displayMode: true,
       output: 'svg',
     });
-  } catch (error) {
-    console.error('Error converting LaTeX to SVG:', error);
-    alert('There was an error converting the LaTeX string to SVG.');
-    return '';
-  }
-};
+  
+ const svgContent = removeKatexHtml(svgContentRaw)
 
-// Funktion för att ladda ner SVG
-const downloadSVG = (svgContent) => {
-  const filename = 'equation.svg';
-  const blob = new Blob([svgContent], { type: 'image/svg+xml;charset=utf-8' });
-  const url = URL.createObjectURL(blob);
-  const downloadLink = document.createElement('a');
-  downloadLink.href = url;
-  downloadLink.download = filename;
-  document.body.appendChild(downloadLink);
-  downloadLink.click();
-  document.body.removeChild(downloadLink);
-  URL.revokeObjectURL(url);
-};
-
-// Hanterare för nedladdningsknappen
-const handleDownloadSVG = () => {
-  const svgContent = convertLatexToSVG();
-  if (svgContent) {
-    downloadSVG(svgContent);
-  }
-*/
-/*
-// Funktion för att generera SVG från LaTeX
-const generateSVG = () => {
-  try {
-    // Använd KaTeX för att rendera LaTeX till SVG
-    return katex.renderToString(latex, {
-      throwOnError: true,
-      displayMode: true,
-      output: 'svg'
-    });
-  } catch (error) {
-    console.error('Error converting LaTeX to SVG:', error);
-    return '';
-  }
-};
-*/
-// Funktion för att ladda ner SVG
-const downloadSVG = () => {
-  const svgContent = generateSVG();
-  if (!svgContent) {
-    alert('Could not generate SVG.');
-    return;
-  }
-
-  // Skapa en Blob från SVG-strängen
-  const blob = new Blob([svgContent], { type: 'image/svg+xml;charset=utf-8' });
-  // Skapa en URL för Blobben
-  const url = URL.createObjectURL(blob);
-  // Skapa en ankare-tag för nedladdningen
-  const downloadLink = document.createElement('a');
-  downloadLink.href = url;
-  downloadLink.download = 'equation.svg';
-  document.body.appendChild(downloadLink);
-  downloadLink.click();
-  document.body.removeChild(downloadLink);
-  URL.revokeObjectURL(url);
-};
-
-
-
-
-
-function LatexToSVGDownloader() {
-  const [equationString, setEquationString] = useState('');
-
-  // Funktion för att konvertera LaTeX till SVG med KaTeX
-  const convertLatexToSVG = () => {
-    try {
-      return katex.renderToString(equationString, {
-        throwOnError: true,
-        displayMode: true,
-        output: 'svg'
-      });
-    } catch (error) {
-      console.error('Error converting LaTeX to SVG:', error);
-      return null;
-    }
-  };
-
-  // Funktion för att ladda ner SVG
-  const downloadSVG = (svgContent, filename = 'equation.svg') => {
+    // Create a Blob from the SVG content and initiate a download
     const blob = new Blob([svgContent], { type: 'image/svg+xml;charset=utf-8' });
     const url = URL.createObjectURL(blob);
     const downloadLink = document.createElement('a');
     downloadLink.href = url;
-    downloadLink.download = filename;
+    downloadLink.download = 'equation.svg';
     document.body.appendChild(downloadLink);
     downloadLink.click();
     document.body.removeChild(downloadLink);
     URL.revokeObjectURL(url);
-  };
-
-  // Funktion för att hantera konverteringen och initiera nedladdningen
-  const handleDownload = () => {
-    const svgContent = convertLatexToSVG();
-    if (svgContent) {
-      downloadSVG(svgContent);
-    } else {
-      alert('Invalid LaTeX input.');
-    }
-  };
+  } 
   
-
+  catch (error) {
+    // Log the error to the console and alert the user.
+    console.error('Error rendering LaTeX as SVG:', error);
+    alert(`Error rendering LaTeX: ${error.message}`);
+  }
 }
 
+ // Download LaTeX as PNG
+ function downloadPNG(filename) {
+  const latexContainer = document.getElementById('equation');
+  html2canvas(latexContainer).then(canvas => {
+    const image = canvas.toDataURL("image/png");
+    const link = document.createElement('a');
+    link.download = filename + '.png';
+    link.href = image;
+    link.click();
+  });
+}
+
+  */
 
   return (
     <>
     
    
       <div>
-        <div className='logo'>
-          <img src="/src/Squeezy_LaTex_logo2.svg" alt="Logo" />
-        </div>
+        <img id="logo" src="/src/Squeezy_LaTex_logo2.svg" alt="Logo" />
         <div className="dropdown-container">
+          
           {symbols.map((symbolObject, index) => (
             // Create a "dropdown" for each object
             <div key={index} className="dropdown">
@@ -351,19 +300,18 @@ function LatexToSVGDownloader() {
           <Latex>{String.raw`$${equationString}$`}</Latex>
           <div id='latex-caret'></div>
         </div>
-        <div className='Buttons'> 
-        <button onClick={() => downloadText("SqueezyLatextEquation.txt", equationString)}>Download as text file</button>
+        <div className='Buttons'>
+          <button type="buttontxt" className="Download" onClick={downloadText}>Download as text file </button>
+          <div className='dropdownButtons'>
+          <button onClick={() => setShowDropdown(!showDropdown)}> Export options: </button>
+          {showDropdown && (
+            <ul>
+              <li><button onClick={() => handleDownloadSVG(equationString)}>Download as SVG</button></li>
+              <button onClick={() => downloadPNG("SqueezyLatextEquation")}>Download as PNG</button>
+            </ul>
+          )}
         </div>
-        <div className="bla">
-      <textarea
-        value={Latex}
-        onChange={(e) => setLatex(e.target.value)}
-        placeholder="Enter LaTeX here"
-      />
-      <button onClick={downloadSVG}>
-        Download SVGd
-      </button>
-    </div>
+        </div>
       </div>
 
     </>
@@ -373,5 +321,3 @@ function LatexToSVGDownloader() {
 }
 
 export default App;
-
-//        <button onClick={(handleDownloadSVG) }>Download as SVG</button>
