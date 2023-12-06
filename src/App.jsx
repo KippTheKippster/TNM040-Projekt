@@ -310,26 +310,12 @@ function App()
 
   //download button funktion.. 
   function onDownloadButtonClicked(e) {
-    //downloadText("SqueezyLatextEquation", equationString)
-    const container = document.getElementById("latex-container")
-    const svgContent = container.getElementsByTagName("svg")[0]
-    var svgData = svgContent.outerHTML;
-    var svgBlob = new Blob([svgData], {type:"image/svg+xml;charset=utf-8"});
-    var svgUrl = URL.createObjectURL(svgBlob);
-    var downloadLink = document.createElement("a");
-    downloadLink.href = svgUrl;
-    downloadLink.download = "SqueezyLatextEquation  .svg";
-    document.body.appendChild(downloadLink);
-    downloadLink.click();
-    document.body.removeChild(downloadLink);
+    const name = "SqueezyLatextEquation";
+    downloadText(name, equationString)
+    downloadAsSVG(name);
   }
 
-  function onMathmlClicked()
-  {
-    const elements = MathMLReader.getSpanElementsByCode("\\pi");
-  }
-
-  function downloadText(filename, text) {   
+  function downloadText(filename) {   
     var element = document.createElement('a');
     element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(equationString));
     element.setAttribute('download', filename);
@@ -341,6 +327,21 @@ function App()
   
     document.body.removeChild(element);
   } 
+
+  function downloadAsSVG(filename)
+  {
+    const container = document.getElementById("latex-container")
+    const svgContent = container.getElementsByTagName("svg")[0]
+    var svgData = svgContent.outerHTML;
+    var svgBlob = new Blob([svgData], {type:"image/svg+xml;charset=utf-8"});
+    var svgUrl = URL.createObjectURL(svgBlob);
+    var downloadLink = document.createElement("a");
+    downloadLink.href = svgUrl;
+    downloadLink.download = "SqueezyLatextEquation.svg";
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
+  }
 
   function onMathJaxLoad()
   {
