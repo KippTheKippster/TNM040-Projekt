@@ -175,7 +175,9 @@ function App() // Här körs appen
   
   return (
     <>
-      <div>
+    
+   
+      <div id='react-root'>
         <img id="logo" src="/src/Squeezy_LaTex_logo2.svg" alt="Logo" />
         <div className="dropdown-container">
         <h2>Symbols:</h2>

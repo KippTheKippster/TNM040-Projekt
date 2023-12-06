@@ -3,6 +3,12 @@
   margin: auto;
   padding: 0;
   text-align: center;
+  min-height: 100%;
+}
+
+.download-button {
+  margin-top: auto;
+  align-self: flex-end;
 }
 
 .cm-editor {
@@ -66,9 +72,6 @@
   min-height: 7em;
 }
 
-.download-button{
-  margin: 2em;
-}
 /* Styling for the outer container */
 .dropdown-container {
   display: grid;
