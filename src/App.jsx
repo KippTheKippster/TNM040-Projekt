@@ -5,6 +5,7 @@ import React from "react";
 import Latex from 'react-latex-next'
 import 'katex/dist/katex.min.css'
 import CodeMirror from '@uiw/react-codemirror';
+import html2canvas from 'html2canvas'; // png  
 
 import {EditorView} from "@codemirror/view"
 
@@ -42,6 +43,7 @@ function App() // Här körs appen
   const [equationString, setEquationString] = useState("")
   const [recentElements, setRecentElements] = useState([]);
   const [elementIndex, setElementIndex] = useState(0)
+  //const [showDropdown, setShowDropdown] = useState(false); //dropdown 
 
 
   function onKeyDown(event)
@@ -164,6 +166,7 @@ function App() // Här körs appen
     document.body.removeChild(element);
   } 
 
+
   const renderDropdownContent = (array) => {
     return array.map((item, index) => (
       <button key={index} onClick={() => onInsertButtonPressed(item[0])}>
@@ -172,6 +175,21 @@ function App() // Här körs appen
       </button>
     ));
   };
+
+    // Download LaTeX as PNG
+    function downloadPNG(filename) {
+      const latexContainer = document.getElementById('latex-container');
+      let rect = latexContainer.getBoundingClientRect();
+      let h = (rect.bottom - rect.top)
+      const margin = 15
+      html2canvas(latexContainer,{backgroundColor:null, y: -margin, height:h+margin*2}).then(canvas => {
+        const image = canvas.toDataURL("image/png");
+        var link = document.createElement('a');
+        link.download = filename + '.png';
+        link.href = image;
+        link.click();
+      });
+    }
   
   return (
     <>
@@ -230,8 +248,10 @@ function App() // Här körs appen
           <Latex>{String.raw`$${equationString}$`}</Latex>
           <div id='latex-caret'></div>
         </div>
+        
         <div className='Buttons'> 
-        <button className='download-button' onClick={() => downloadText("SqueezyLatextEquation.txt", equationString)}>Download as text file</button>
+        <button onClick={() => downloadText("SqueezyLatextEquation.txt", equationString)}>Download as text file</button>
+        <button onClick={() => downloadPNG("SqueezyLatextEquation")}>Download as PNG</button>
         </div>
       </div>
     </>

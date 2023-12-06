@@ -38,6 +38,8 @@
 #latex-container{
   font-size: 40px;
   margin-top: 3vw;
+ /* margin-bottom: 5vw;*/ 
+ margin-bottom: 15px;
 }
 
 #latex-caret{
