@@ -179,10 +179,21 @@ function App() // Här körs appen
     // Download LaTeX as PNG
     function downloadPNG(filename) {
       const latexContainer = document.getElementById('latex-container');
-      let rect = latexContainer.getBoundingClientRect();
-      let h = (rect.bottom - rect.top)
+      const base = latexContainer.getElementsByClassName("base")[0]
+      console.log(base)
+      let rect = base.getBoundingClientRect();
+      const h = (rect.bottom - rect.top)
+      const w = rect.right - rect.left
+      const x = rect.left
       const margin = 15
-      html2canvas(latexContainer,{backgroundColor:null, y: -margin, height:h+margin*2}).then(canvas => {
+      console.log(w)
+      html2canvas(latexContainer,
+        {
+          backgroundColor:null, 
+          y: -margin, height: h + margin * 2,
+          x: x - margin, width: w + margin * 2
+          
+        }).then(canvas => {
         const image = canvas.toDataURL("image/png");
         var link = document.createElement('a');
         link.download = filename + '.png';
