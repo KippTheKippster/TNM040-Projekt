@@ -310,7 +310,18 @@ function App()
 
   //download button funktion.. 
   function onDownloadButtonClicked(e) {
-    downloadText("SqueezyLatextEquation", equationString)
+    //downloadText("SqueezyLatextEquation", equationString)
+    const container = document.getElementById("latex-container")
+    const svgContent = container.getElementsByTagName("svg")[0]
+    var svgData = svgContent.outerHTML;
+    var svgBlob = new Blob([svgData], {type:"image/svg+xml;charset=utf-8"});
+    var svgUrl = URL.createObjectURL(svgBlob);
+    var downloadLink = document.createElement("a");
+    downloadLink.href = svgUrl;
+    downloadLink.download = "SqueezyLatextEquation  .svg";
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
   }
 
   function onMathmlClicked()
@@ -341,12 +352,22 @@ function App()
   }
 
   const config = {
-    loader: { load: ["input/asciimath"] },
+    loader: 
+    { 
+      load: ['input/tex-base', 'output/svg', 'ui/menu', '[tex]/require'] 
+    },
+    tex:
+    {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+    },
+    svg: 
+    {
+    }
   };
 
   return (
     <>
-      <MathJaxContext config={config}>
+      <MathJaxContext config={config} src='https://cdn.jsdelivr.net/npm/mathjax@3.0.0/es5/startup.js'>
         <div className='logo'>
           <img src="/src/Squeezy_LaTex_logo2.svg" alt="Logo" />
         </div>
@@ -364,7 +385,7 @@ function App()
           {<CodeMirror theme={baseTheme} onChange={onEquationChanged} readOnly={false} id="equation-input" className='text-box' value={equationString}/>}
         </div>
         <div id='latex-container'>
-          <MathJax dynamic onTypeset={onMathJaxLoad}>{"\\(" + equationString + "\\)"}</MathJax>
+          <MathJax dynamic onTypeset={onMathJaxLoad}>{"$" + equationString + "$"}</MathJax>
           {/*MathMLReader.renderMathHTMLComponents(equationString)*/}
           <div id='latex-caret'></div>
         </div>

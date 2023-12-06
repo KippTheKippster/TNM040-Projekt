@@ -73,7 +73,7 @@ function getAllSpanElements()
     const list = getChildrenWithInterpreter(math, [], (child) => 
     {
         let text = child.textContent.replace(/\u200B/g,'') // Removes big funny whitespace chars
-         if (text != "none")
+        if (text != "none")
         {
             //console.log("code: " + child.textContent.charCodeAt(0) + ": " + child.textContent)
             return child;
