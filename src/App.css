@@ -89,6 +89,8 @@
 /* Unique styling for the button in each dropdown, otherwhise it uses "button"*/
 .dropbtn {
   font-size: 0.8em;
+  width: 8.3em;
+  height: 4.5em;
   /*font-size: x-small;*/
 }
 
@@ -122,21 +124,21 @@
 
 .recent-elements {
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* 3 columns */
-  grid-template-rows: repeat(2, 1fr);    /* 2 rows */
+  grid-template-columns: repeat(9, 1fr); /* 9 columns */
+  grid-template-rows: repeat(1, 1fr);    /* 1 rows */
   gap: 5px; /* Adjust the gap as needed */
   border: 2px solid #333; /* Add a 2px solid border with a darker color */
   padding: 10px; /* Add some padding to the container */
-  min-height: 6em;
-  max-width: 12em;
+  min-height: 2em;
+  /*max-width: 12em;*/
 }
 
 .recent-elements button {
   /* Add any additional styles for the buttons here */
   width: 100%; /* Make buttons fill the grid cells */
   height: 100%; /* Make buttons fill the grid cells */
-  min-width: 3em;
-  max-width: 4em;
+  /*min-width: 3em;
+  max-width: 4em;*/
   font-size: x-small;
 }
 

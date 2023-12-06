@@ -83,16 +83,13 @@ const summation = [
   ["\\prod_{k=1}^{n}A_k", 0]
 ]
 
-const exponential = [
+const exponential_and_roots = [
   ["x^a", 0],
   ["x_a", 0],
   ["x_b^a", -2,],
   ["{_b^a}x", 0],
   ["e^{-i\\omega t}", 0],
-  ["x^2", 0]
-]
-
-const roots = [
+  ["x^2", 0],
   ["\\sqrt{x}", -1],
   ["\\sqrt[a]{x}", -1],
   ["\\frac{-b\\pm\\sqrt{b^2-4ac}}{2a}", 0],
@@ -126,8 +123,7 @@ const functions = [
   { name: 'Fractions and Binomial', functions: fractions_and_binomial },
   { name: 'Integral', functions: integral },
   { name: 'Summation', functions: summation },
-  { name: 'Exponential', functions: exponential },
-  { name: 'Roots', functions: roots },
+  { name: 'Exponential and Roots', functions: exponential_and_roots },
   { name: 'Limits and Log', functions: limits_and_log },
   { name: 'Accents', functions: accent },
 ]
