@@ -11,10 +11,10 @@
   align-self: flex-end;
 }
  body{
-  font-size: large;
-	/*color: #fff;
-	background-color: #e3cbb1;*/
-	overflow-x: hidden;
+  /*font-size: large;
+	color: #fff;
+	background-color: #e3cbb1;
+	overflow-x: hidden;*/
   background-image: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/1462889/pat-back.svg');
   background-position: center;
   background-repeat: repeat;
@@ -26,9 +26,9 @@
   flex-wrap: wrap;
   -ms-flex-pack: center;
   justify-content: center;
-  padding-top: 100px;
-  /*padding-bottom: 300px;*/
-  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  /*padding-top: 100px;
+  padding-bottom: 300px;*/
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; /* maybe ?? */
 } 
 .cm-editor {
   /*height: 192px;*/
@@ -76,6 +76,11 @@
   }
 }
 
+
+
+.bi-question-lg {
+  animation: moveIcon 2s linear infinite; /* Adjust the timing as you like */
+}
 
 @media (prefers-color-scheme: light) {
   #latex-caret {
@@ -461,7 +466,9 @@ a:hover {
 .btn-help {
   width: 60px; height: 60px;
   background:#b9875e; 
-  border-radius: 50%; cursor: pointer;
+  border-radius: 50%; 
+  cursor: pointer;
+  overflow: hidden;
   box-shadow: 1px 14px 35px 0 #654e3b;
   display: flex;
   justify-content: center;
@@ -472,7 +479,8 @@ a:hover {
 .btn-help:hover {
   background: #ede0d4; 
   border-radius: 15px;
-  width: 250px; height: 350px;}
+  width: 250px; height: 350px;
+}
 
 .btn-help i {
   position: absolute;
@@ -501,14 +509,16 @@ a:hover {
   }
 }
 
-footer {
+
+
+/* footer {
   left: 0;
   bottom: 0;
   width: 100%;
   background-color: red;
   color: white;
   text-align: center;
-}
+} */
 
 @media screen and (max-width: 991px) {
 .logo {

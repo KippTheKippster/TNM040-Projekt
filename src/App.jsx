@@ -230,8 +230,9 @@ function App() // Här körs appen
        
         {/* info box */}
         <div className="btn-help">
-          
-          <i className="bi bi-question-1g"></i> 
+          {/*<Icon  className = "Qmark" icon="line-md:question-circle" width="25" height="25" /> */}
+          <i className="bi bi-question-1g"> <Icon icon="clarity:help-outline-badged" color="#e6ccb2" />
+  </i> 
           <div className="text-section">
             <h5>INFO</h5>
             <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ut aliquam, neque aliquid qui nulla quibusdam quos natus temporibus consequuntur vero recusandae illum provident aut ex, assumenda nobis?</p>
@@ -309,7 +310,9 @@ function App() // Här körs appen
           </div>
         </div>
       </MathJaxContext>
+    
     </>
+    
   );
 }
 
@@ -361,5 +364,6 @@ const dropdownContainer =
       </div>
     ))}
   </div>
+
 
 export default App;
