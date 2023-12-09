@@ -27,7 +27,7 @@
   -ms-flex-pack: center;
   justify-content: center;
   padding-top: 100px;
-  padding-bottom: 300px;
+  /*padding-bottom: 300px;*/
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 } 
 .cm-editor {
@@ -501,6 +501,14 @@ a:hover {
   }
 }
 
+footer {
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: red;
+  color: white;
+  text-align: center;
+}
 
 @media screen and (max-width: 991px) {
 .logo {
