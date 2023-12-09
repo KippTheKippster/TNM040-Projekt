@@ -9,6 +9,8 @@ import CodeMirror from '@uiw/react-codemirror';
 import { EditorView } from "@codemirror/view"
 import { MathJax, MathJaxContext } from "better-react-mathjax";
 
+import { Icon } from '@iconify/react';
+
 let baseTheme = EditorView.baseTheme({
   ".cm-o-replacement": {
     display: "inline-block",
@@ -222,13 +224,25 @@ function App() // Här körs appen
 
   return (
     <>
+    
       <MathJaxContext
         config={config}
         version={3}
         src='https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js'
       >
         <img id="logo" src="/src/Squeezy_LaTex_logo2.svg" alt="Logo" />
-        <div className="dropdown-container">
+       
+        {/* info box */}
+        <div className="btn-help">
+          
+          <i className="bi bi-question-1g"></i> 
+          <div className="text-section">
+            <h5>INFO</h5>
+            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ut aliquam, neque aliquid qui nulla quibusdam quos natus temporibus consequuntur vero recusandae illum provident aut ex, assumenda nobis?</p>
+          </div>
+        </div>
+
+        <div className="dropdown-container">  
           <h2>Symbols:</h2>
           {symbols.map((symbolObject, index) => (
             // Create a "dropdown" for each object
@@ -282,11 +296,21 @@ function App() // Här körs appen
           <div id='latex-caret'></div>
         </div>
 
-        <div className='Buttons'>
+        {/* <div className='Buttons'>
           <button onClick={() => downloadText("SqueezyLatextEquation.txt", equationString)}>Download as text file</button>
           <button onClick={() => downloadPNG("SqueezyLatextEquation", 256)}>Download as PNG</button>
           <button onClick={() => downloadSVG("SqueezyLatextEquation")}>Download as SVG</button>
 
+        </div> */}
+
+        <div className="sec-center"> 
+          <input className="dropdown" type="checkbox" id="dropdown" name="dropdown"/>
+          <label className="for-dropdown" for="dropdown">Download <Icon icon="line-md:download-outline-loop" width="25" height="25" /></label>
+          <div className="section-dropdown"> 
+            <a href="#" onClick={() => downloadText('SqueezyLatextEquation.txt', equationString)}> as Text</a>
+            <a href="#" onClick={() => downloadPNG('SqueezyLatextEquation', 256)}> as PNG</a> {/*som en bredd på 256 pixlar eller en upplösning på 256 DPI  */}
+            <a href="#" onClick={() => downloadSVG('SqueezyLatextEquation')}> as SVG</a>
+          </div>
         </div>
       </MathJaxContext>
     </>
@@ -296,3 +320,11 @@ function App() // Här körs appen
 }
 
 export default App;
+
+//info box : modal box maybeee ? or overlay (?) https://codepen.io/neolegolas14/pen/zQBOEa
+//or https://www.w3schools.com/bootstrap/bootstrap_popover.asp  The Popover Plugin
+// https://www.w3schools.com/css/css_tooltip.asp Tooltip 
+// size of text need to fix. 
+//night mood, dark mood
+//CSS Media Queries 
+//page footer ? n
