@@ -29,14 +29,7 @@ window.addEventListener("DOMContentLoaded", () => {
   console.log("Dom loaded")
 })
 
-/*
-document.addEventListener('click', function(e) {  //Listens to clicked html elements
-  prevClickedTarget = e.target;
-  console.log(prevClickedTarget)
-}, false);  
-*/
-
-let prevClickedTarget = null;
+let codeMirrorCursorIndex = 0;
 
 function App() // Här körs appen
 {
@@ -47,6 +40,7 @@ function App() // Här körs appen
   const [elementIndex, setElementIndex] = useState(0)
   //const [showDropdown, setShowDropdown] = useState(false); //dropdown 
 
+  let codeMirrorFirstUpdate = true
 
   function onKeyDown(event) {
     if (event.code == "ArrowRight") {
@@ -56,10 +50,6 @@ function App() // Här körs appen
       //addLaTeXCaretIndex(-1);
     }
   }
-
-
-  //document.removeEventListener('keydown', onKeydown); //Javascript big pee pee poo poo
-  //document.addEventListener('keydown', onKeydown, true);
 
   //runs after render
   useEffect(() => {
@@ -73,8 +63,10 @@ function App() // Här körs appen
       }
     }
     //document.addEventListener('keydown', onKeyDown);
+    document.addEventListener("insertButtonPressed", onInsertButtonPressed)
     return () => {
       //  document.removeEventListener('keydown', onKeyDown);
+      document.removeEventListener("insertButtonPressed", onInsertButtonPressed)
     };
   });
 
@@ -111,11 +103,18 @@ function App() // Här körs appen
   }
 
   function onEquationChanged(e) {
+    codeMirrorCursorIndex += e.length - equationString.length
+    codeMirrorCursorIndex = Math.max(0, codeMirrorCursorIndex)
     setEquationString(String.raw`${e}`)
   }
 
-  function onInsertButtonPressed(symbol) {
-    const finalString = equationString + symbol;
+  function onInsertButtonPressed(e) {
+    const symbol = e.detail
+    const finalString =
+      equationString.slice(0, codeMirrorCursorIndex) + symbol +
+      equationString.slice(codeMirrorCursorIndex);
+
+    codeMirrorCursorIndex += symbol.length
     //document.getElementById("equation-input").value = finalString;
     setEquationString(finalString);
 
@@ -158,15 +157,6 @@ function App() // Här körs appen
     document.body.removeChild(downloadLink);
   }
 
-  const renderDropdownContent = (array) => {
-    return array.map((item, index) => (
-      <button key={index} onClick={() => onInsertButtonPressed(item[0])}>
-        {/* Display the item using the Latex component */}
-        {<MathJax>{String.raw`$${item[0]}$`}</MathJax>}
-      </button>
-    ));
-  };
-
   // Download LaTeX as PNG
   function downloadPNG(filename, res) {
     const latexContainer = document.getElementById('latex-container');
@@ -176,13 +166,11 @@ function App() // Här körs appen
     const svgDataUrl = URL.createObjectURL(blob)
 
     let image = new Image()
-    image.addEventListener('load', () => { //Converts svg data to png data 
+    image.addEventListener('load', () => { //Converts svg data to png data Legend https://gist.github.com/tatsuyasusukida/1261585e3422da5645a1cbb9cf8813d6
       const svgWidth = svg.getAttribute("width").slice(0, -2)
       const svgHeight = svg.getAttribute("height").slice(0, -2)
-      const length = Math.sqrt(Math.pow(svgWidth, 2) + Math.pow(svgHeight, 2))
-      const width = res * (svgWidth / length) //Bruh
-      const height = res * (svgHeight / length)
-      console.log(length + " : " + width + " : " + height)
+      const width = res * svgWidth
+      const height = res * svgHeight
       const canvas = document.createElement('canvas')
 
       canvas.setAttribute('width', width)
@@ -198,28 +186,36 @@ function App() // Här körs appen
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-  })
+    })
 
-  image.src = svgDataUrl
+    image.src = svgDataUrl
 
+  }
+
+  function onCodeMirrorUpdate(v) {
+    if (v.changedRanges.length > 0) {
+      let index = codeMirrorCursorIndex
+      v.state.selection.ranges[0].from = index
+      v.state.selection.ranges[0].to = index
+    }
+
+    if (codeMirrorFirstUpdate == false) {
+      //console.log("Setting cursor!")
+      codeMirrorCursorIndex = v.state.selection.ranges[0].from
+    }
+
+    codeMirrorFirstUpdate = false
   }
 
   const config = {
     loader:
     {
-      //load: ["input/tex-full"]
       load: ['input/tex', 'output/svg', '[tex]/require']
-      //loader: { load: ["input/asciimath"] }
     },
     tex:
     {
       inlineMath: [['$', '$'], ['\\(', '\\)']],
-    },
-    //svg: 
-    //{
-    //  scale: 1,
-    //  minScale: 0.5,
-    //}
+    }
   };
 
   return (
@@ -231,6 +227,7 @@ function App() // Här körs appen
         src='https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js'
       >
         <img id="logo" src="/src/Squeezy_LaTex_logo2.svg" alt="Logo" />
+<<<<<<< HEAD
        
         {/* info box */}
         <div className="btn-help">
@@ -280,16 +277,19 @@ function App() // Här körs appen
             </div>
           ))}
         </div>
+=======
+        {dropdownContainer}
+>>>>>>> refs/remotes/origin/main
         <div className="recent-elements">
           <h2>Recents:</h2>
           {recentElements.map((element, index) => (
-            <button key={index} onClick={() => onInsertButtonPressed(element)}>
+            <button key={index} onClick={() => onInsertButtonPressed({ detail: element })}>
               {<MathJax>{String.raw`$${element}$`}</MathJax>}
             </button>
           ))}
         </div>
         <div id='text-box-container'>
-          {<CodeMirror theme={baseTheme} onChange={onEquationChanged} readOnly={false} id="equation-input" className='text-box' value={equationString} />}
+          {<CodeMirror theme={baseTheme} onUpdate={onCodeMirrorUpdate} onChange={onEquationChanged} readOnly={false} id="equation-input" className='text-box' value={equationString} />}
         </div>
         <div id='latex-container'>
           <MathJax dynamic>{String.raw`$${"\\displaystyle " + equationString}$`}</MathJax>
@@ -315,10 +315,9 @@ function App() // Här körs appen
       </MathJaxContext>
     </>
   );
-
-
 }
 
+<<<<<<< HEAD
 export default App;
 
 //info box : modal box maybeee ? or overlay (?) https://codepen.io/neolegolas14/pen/zQBOEa
@@ -328,3 +327,55 @@ export default App;
 //night mood, dark mood
 //CSS Media Queries 
 //page footer ? n
+=======
+const renderDropdownContent = (array) => {
+  return array.map((item, index) => (
+    <button key={index} onClick={() => document.dispatchEvent(new CustomEvent("insertButtonPressed", { detail: item[0] }))}>
+      {/* Display the item using the Latex component */}
+      {<MathJax>{String.raw`$${item[0]}$`}</MathJax>}
+    </button>
+  ));
+};
+
+const dropdownContainer =
+  <div className="dropdown-container">
+    <h2>Symbols:</h2>
+    {symbols.map((symbolObject, index) => (
+      // Create a "dropdown" for each object
+      <div key={index} className="dropdown">
+        {/* The button for the dropdown displays the name of the object */}
+        <button className="dropbtn">
+
+          {/* Display the first symbol underneath the name */}
+          {symbolObject.symbols.length > 0 && (
+            <MathJax>{String.raw`$${symbolObject.symbols[0][0]}$`}</MathJax>
+          )}
+          <h2>{symbolObject.name}</h2>
+          {/*<br />*/}
+
+        </button>
+        <div className="dropdown-content">
+          {/* Call the function to render dropdown content */}
+          {renderDropdownContent(symbolObject.symbols)}
+        </div>
+      </div>
+    ))}
+    <h2>Functions:</h2>
+    {functions.map((functionObject, index) => (
+      <div key={index} className="dropdown">
+        <button className="dropbtn">
+
+          {functionObject.functions.length > 0 && (
+            <MathJax>{String.raw`$${functionObject.functions[0][0]}$`}</MathJax>
+          )}
+          <h2>{functionObject.name}</h2>
+        </button>
+        <div className="dropdown-content">
+          {renderDropdownContent(functionObject.functions)}
+        </div>
+      </div>
+    ))}
+  </div>
+
+export default App;
+>>>>>>> refs/remotes/origin/main
