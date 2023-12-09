@@ -227,7 +227,6 @@ function App() // Här körs appen
         src='https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js'
       >
         <img id="logo" src="/src/Squeezy_LaTex_logo2.svg" alt="Logo" />
-<<<<<<< HEAD
        
         {/* info box */}
         <div className="btn-help">
@@ -277,9 +276,6 @@ function App() // Här körs appen
             </div>
           ))}
         </div>
-=======
-        {dropdownContainer}
->>>>>>> refs/remotes/origin/main
         <div className="recent-elements">
           <h2>Recents:</h2>
           {recentElements.map((element, index) => (
@@ -317,17 +313,6 @@ function App() // Här körs appen
   );
 }
 
-<<<<<<< HEAD
-export default App;
-
-//info box : modal box maybeee ? or overlay (?) https://codepen.io/neolegolas14/pen/zQBOEa
-//or https://www.w3schools.com/bootstrap/bootstrap_popover.asp  The Popover Plugin
-// https://www.w3schools.com/css/css_tooltip.asp Tooltip 
-// size of text need to fix. 
-//night mood, dark mood
-//CSS Media Queries 
-//page footer ? n
-=======
 const renderDropdownContent = (array) => {
   return array.map((item, index) => (
     <button key={index} onClick={() => document.dispatchEvent(new CustomEvent("insertButtonPressed", { detail: item[0] }))}>
@@ -378,4 +363,3 @@ const dropdownContainer =
   </div>
 
 export default App;
->>>>>>> refs/remotes/origin/main
