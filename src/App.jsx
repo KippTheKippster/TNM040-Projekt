@@ -108,11 +108,12 @@ function App() // Här körs appen
 
   function onInsertButtonPressed(e) {
     const symbol = e.detail
+    const addString = symbol + " "
     const finalString =
-      equationString.slice(0, codeMirrorCursorIndex) + symbol +
+      equationString.slice(0, codeMirrorCursorIndex) + addString +
       equationString.slice(codeMirrorCursorIndex);
 
-    codeMirrorCursorIndex += symbol.length
+    codeMirrorCursorIndex += addString.length
     //document.getElementById("equation-input").value = finalString;
     setEquationString(finalString);
 
