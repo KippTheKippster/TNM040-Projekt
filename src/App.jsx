@@ -243,7 +243,7 @@ function App() // Här körs appen
           <h2>Recents:</h2>
           {recentElements.map((element, index) => (
             <button key={index} onClick={() => onInsertButtonPressed({ detail: element })}>
-              {<MathJax>{String.raw`$${element}$`}</MathJax>}
+              {<MathJax>{String.raw`$${"\\displaystyle " + element}$`}</MathJax>}
             </button>
           ))}
         </div>

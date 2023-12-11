@@ -56,7 +56,7 @@ const integral = [
 ]
 
 const summation = [
-  ["\\sum{x}", -1],
+  ["\\sum{}", -1],
   ["\\sum_{a}^{n}", 0],
   ["\\sum_{a}", 0],
   ["\\prod{}", 0],
