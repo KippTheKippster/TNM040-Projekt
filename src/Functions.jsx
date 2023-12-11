@@ -1,5 +1,5 @@
 const matrix = [
-  ["\\begin{Bmatrix}\na & b \\end{Bmatrix}", -26],
+  ["\\begin{Bmatrix}\na & b \n\\end{Bmatrix}", -26],
   ["\\begin{vmatrix}\na & b \\\\ \nc & d\n\\end{vmatrix}", -26],
   ["\\begin{Vmatrix}\na & b \\\\ \nc & d\n\\end{Vmatrix}", -26],
   ["\\begin{pmatrix}\na & b \\\\ \nc & d\n\\end{pmatrix}", -26],

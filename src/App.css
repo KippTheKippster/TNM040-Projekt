@@ -89,7 +89,7 @@
 
 
 .bi-question-lg {
-  animation: moveIcon 2s linear infinite; /* Adjust the timing as you like */
+  animation: moveIcon 0s linear infinite; /* Adjust the timing as you like */
 }
 
 @media (prefers-color-scheme: light) {
@@ -105,12 +105,12 @@
   margin-top: 1em;
   height: auto;
   padding: 0;
-  min-height: 7em;
 }
 
 /* Styling for the outer container */
 .dropdown-container {
-  display: grid;
+  display: flex;
+  flex-direction: column;
   grid-gap: 5px;
   grid-template-columns: repeat(9, 1fr);
   /*justify-content: flex-start; /* or space-between */
@@ -119,18 +119,30 @@
   padding: 10px; /* Add some padding to the container */
 }
 
+.dropdown-info-text{
+  min-width: 72px;
+  text-align: left;
+}
+
+.dropdown-row{
+  display: flex;
+  gap: 10px;
+}
+
 /* Styling for each dropdown */
 .dropdown {
   position: relative;
-  /*align-self: stretch;*/
   margin: auto;
+  width: 100%;
+  height: 5em;
+  /*align-self: stretch;*/
 }
 
 /* Unique styling for the button in each dropdown, otherwhise it uses "button"*/
 .dropbtn {
   font-size: 1.4em;
-  width: 10.8vw;
-  height: 11vh;
+  height: 100%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between; /* Add this */
@@ -225,6 +237,8 @@
   flex-direction: column;
   width: fit-content;
   margin: auto;
+  margin-top: 2em;
+  margin-bottom: 2em;
   box-shadow: 1px 14px 35px 0 #654e3b;
   font-size: 22px;
 }
@@ -238,6 +252,7 @@
   padding-bottom: 0.6em;
   width: fit-content;
   display: flex;
+  cursor: default;
 }
 
 #download-button .icon{

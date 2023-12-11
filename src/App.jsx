@@ -1,8 +1,6 @@
-import { useState, useEffect, memo } from 'react'
+import { useState, useEffect } from 'react'
 import './App.css'
 import React from "react";
-//import { MathComponent } from "mathjax-react";
-import Latex from 'react-latex-next'
 import 'katex/dist/katex.min.css'
 import CodeMirror from '@uiw/react-codemirror';
 
@@ -110,11 +108,12 @@ function App() // Här körs appen
 
   function onInsertButtonPressed(e) {
     const symbol = e.detail
+    const addString = symbol + " "
     const finalString =
-      equationString.slice(0, codeMirrorCursorIndex) + symbol +
+      equationString.slice(0, codeMirrorCursorIndex) + addString +
       equationString.slice(codeMirrorCursorIndex);
 
-    codeMirrorCursorIndex += symbol.length
+    codeMirrorCursorIndex += addString.length
     //document.getElementById("equation-input").value = finalString;
     setEquationString(finalString);
 
@@ -287,7 +286,8 @@ const renderDropdownContent = (array) => {
 
 const dropdownContainer =
   <div className="dropdown-container">
-    <h2>Symbols:</h2>
+    <div className='dropdown-row'>
+    <h2 className='dropdown-info-text'>Symbols:</h2>
     {symbols.map((symbolObject, index) => (
       // Create a "dropdown" for each object
       <div key={index} className="dropdown">
@@ -308,7 +308,9 @@ const dropdownContainer =
         </div>
       </div>
     ))}
-    <h2>Functions:</h2>
+    </div>
+    <div className='dropdown-row'>
+    <h2 className='dropdown-info-text'>Functions:</h2>
     {functions.map((functionObject, index) => (
       <div key={index} className="dropdown">
         <button className="dropbtn">
@@ -323,6 +325,7 @@ const dropdownContainer =
         </div>
       </div>
     ))}
+  </div>
   </div>
 
 
