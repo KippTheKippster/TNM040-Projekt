@@ -50,6 +50,8 @@ const integral = [
   ["\\oint_{a}^{b}", 0],
   ["dx", 0],
   ["dy", 0],
+  ["\\partial x", 0],
+  ["\\partial y", 0],
   ["d\\theta", 0]
 ]
 
