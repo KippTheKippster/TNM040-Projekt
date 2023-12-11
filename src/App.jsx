@@ -143,17 +143,18 @@ function App() // Här körs appen
   }
 
   function downloadSVG(filename) {
-    const container = document.getElementById("latex-container")
-    const svgContent = container.getElementsByTagName("svg")[0]
-    var svgData = new XMLSerializer().serializeToString(svgContent)
-    var svgBlob = new Blob([svgData], { type: "image/svg+xml;charset=utf-8" });
-    var svgUrl = URL.createObjectURL(svgBlob);
-    var downloadLink = document.createElement("a");
-    downloadLink.href = svgUrl;
-    downloadLink.download = filename;
-    document.body.appendChild(downloadLink);
-    downloadLink.click();
-    document.body.removeChild(downloadLink);
+    const latexContainer = document.getElementById('latex-container');
+    const svg = latexContainer.getElementsByTagName("svg")[0]
+    const svgData = new XMLSerializer().serializeToString(svg)
+    var blob = new Blob([svgData], { type: "image/svg+xml;charset=utf-8" });
+    const svgDataUrl = URL.createObjectURL(blob)
+
+    var link = document.createElement("a");
+    link.download = filename;
+    link.href = svgDataUrl;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   }
 
   // Download LaTeX as PNG
