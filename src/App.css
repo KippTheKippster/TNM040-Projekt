@@ -60,7 +60,7 @@
 }
 
 #logo{
-  width: 35%;
+  width: 20%;
 }
 
 #latex-container{
@@ -128,9 +128,9 @@
 
 /* Unique styling for the button in each dropdown, otherwhise it uses "button"*/
 .dropbtn {
-  font-size: 1.6em;
-  width: 11em;
-  height: 5em;
+  font-size: 1.4em;
+  width: 10.8vw;
+  height: 11vh;
   display: flex;
   flex-direction: column;
   justify-content: space-between; /* Add this */
@@ -143,8 +143,9 @@
   position: absolute;
   top: 100%;
   left: 0;
-  grid-template-columns: repeat(6, 1fr); /* 6 columns */
+  grid-template-columns: repeat(5, 1fr); /* 6 columns */
   max-height: 200px; /* Adjust as needed */
+  overflow-x:inherit;
   overflow-y: auto; /* Enable vertical scrolling if needed */
   border: 1px solid #ccc; /* Add a border for better visibility */
   display: none;
