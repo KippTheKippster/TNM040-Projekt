@@ -1,4 +1,5 @@
 const matrix = [
+  ["\\begin{Bmatrix}\na & b \\end{Bmatrix}", -26],
   ["\\begin{vmatrix}\na & b \\\\ \nc & d\n\\end{vmatrix}", -26],
   ["\\begin{Vmatrix}\na & b \\\\ \nc & d\n\\end{Vmatrix}", -26],
   ["\\begin{pmatrix}\na & b \\\\ \nc & d\n\\end{pmatrix}", -26],
@@ -47,10 +48,6 @@ const integral = [
   ["\\iiint_{a}^{b}", 0],
   ["\\oint{}", -1],
   ["\\oint_{a}^{b}", 0],
-  ["\\oiint{}", -1],
-  ["\\oiint_{a}^{b}", 0],
-  ["\\oiiint{}", -1],
-  ["\\oiiint_{a}^{b}", 0],
   ["dx", 0],
   ["dy", 0],
   ["d\\theta", 0]
@@ -97,10 +94,10 @@ const exponential_and_roots = [
 ]
 
 const limits_and_log = [
+  ["\\log_a{}", -1],  
+  ["\\log{}", -1],
   ["\\lim_{x\\to\\infty}", -1],
   ["\\ln{}", -1],
-  ["\\log_a{}", -1],
-  ["\\log{}", -1]
 ]
 
 const accent = [
