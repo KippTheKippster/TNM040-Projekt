@@ -128,33 +128,51 @@ function App() // Här körs appen
     });
   }
 
-  // Download LaTeX as text
-  function downloadText(filename, text) {
-    var element = document.createElement('a');
-    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(equationString));
-    element.setAttribute('download', filename);
-
-    element.style.display = 'none';
-    document.body.appendChild(element);
-
-    element.click();
-
-    document.body.removeChild(element);
-  }
-
-  function downloadSVG(filename) {
+  function getSVGDataUrl()
+  {
     const latexContainer = document.getElementById('latex-container');
     const svg = latexContainer.getElementsByTagName("svg")[0]
     const svgData = new XMLSerializer().serializeToString(svg)
     var blob = new Blob([svgData], { type: "image/svg+xml;charset=utf-8" });
     const svgDataUrl = URL.createObjectURL(blob)
+    return svgDataUrl
+  }
 
-    var link = document.createElement("a");
-    link.download = filename;
-    link.href = svgDataUrl;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+  // Download LaTeX as text
+  function downloadText(filename, text) {
+    const svgDataUrl =  getSVGDataUrl()
+
+    let image = new Image()
+    image.addEventListener('load', () => { //Used to fix a bug in safari where the download code has to run in a i-frame https://developer.apple.com/forums/thread/711621
+      var element = document.createElement('a');
+      element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(equationString));
+      element.setAttribute('download', filename);
+  
+      element.style.display = 'none';
+      document.body.appendChild(element);
+  
+      element.click();
+  
+      document.body.removeChild(element);
+    });
+
+    image.src = svgDataUrl
+  }
+
+  function downloadSVG(filename) {
+    const svgDataUrl = getSVGDataUrl()
+
+    let image = new Image()
+    image.addEventListener('load', () => { //Used to fix a bug in safari where the download code has to run in a i-frame https://developer.apple.com/forums/thread/711621
+      var link = document.createElement("a");
+      link.download = filename;
+      link.href = svgDataUrl;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    });
+
+    image.src = svgDataUrl //TODO not so stupid and slow way to trigger i-fram
   }
 
   // Download LaTeX as PNG
