@@ -234,8 +234,9 @@ function App() // Här körs appen
           <i className="bi bi-question-1g"> <Icon icon="clarity:help-outline-badged" color="#e6ccb2" />
         </i> 
           <div className="text-section">
-            <h5>INFO</h5>
-            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ut aliquam, neque aliquid qui nulla quibusdam quos natus temporibus consequuntur vero recusandae illum provident aut ex, assumenda nobis?</p>
+            <h5>Välkommen till Squeezy LaTeX</h5>
+            <p>Skriv egen LaTeX-kod eller välj förinställda funktioner från knapparna. Håll sedan muspekaren över "Download" och välj i vilket filfomat du vill ladda ned resultatet som.</p>
+            <p>Swisha oss gärna ett bidrag om du tycker om sidan på nummer: "Insert number"</p>
           </div>
         </div>
         {dropdownContainer}
