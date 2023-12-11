@@ -19,13 +19,23 @@
   background-position: center;
   background-repeat: repeat;
   background-size: 4%;
-  width: 100%;
+  /*
   display: -ms-flexbox;
   display: flex;
   -ms-flex-wrap: wrap;
   flex-wrap: wrap;
   -ms-flex-pack: center;
   justify-content: center;
+  */
+  margin: 0;
+  
+  place-items: center;
+  min-width: 320px;
+  min-height: 100vh;
+  width: 100%;
+  height: 100%;
+  line-height: 1.5;
+  font-weight: 400;
   /*padding-top: 100px;
   padding-bottom: 300px;*/
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; /* maybe ?? */
@@ -464,6 +474,8 @@ a:hover {
 }
 
 .btn-help {
+  left: 10px;
+  top: 10px;
   width: 60px; height: 60px;
   background:#b9875e; 
   border-radius: 50%; 
@@ -474,6 +486,8 @@ a:hover {
   justify-content: center;
   align-items: center;
   transition: all 0.7s ease-in-out;
+  position: absolute;
+  z-index: 1000;
 }
 
 .btn-help:hover {
@@ -484,11 +498,11 @@ a:hover {
 
 .btn-help i {
   position: absolute;
-  }
+}
   
-  .btn-help:hover i{
+.btn-help:hover i{
     opacity: 0;
-  } 
+} 
 .btn-help i{
   font-size: 30px;
   color: #000; 
@@ -496,6 +510,7 @@ a:hover {
 .text-section {
   padding: 20px;
   opacity: 0;
+  position: relative;
 }
 .btn-help:hover .text-section{
   animation: forwards fadeIn 0.7s 0.5s ease-in-out ;
