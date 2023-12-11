@@ -145,7 +145,7 @@ function App() // Här körs appen
   function downloadSVG(filename) {
     const container = document.getElementById("latex-container")
     const svgContent = container.getElementsByTagName("svg")[0]
-    var svgData = svgContent.outerHTML;
+    var svgData = new XMLSerializer().serializeToString(svgContent)
     var svgBlob = new Blob([svgData], { type: "image/svg+xml;charset=utf-8" });
     var svgUrl = URL.createObjectURL(svgBlob);
     var downloadLink = document.createElement("a");

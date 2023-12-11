@@ -263,7 +263,7 @@ const symbols = [
   { name: 'Geometry', symbols: geometry },
   { name: 'Binary', symbols: binary },
   { name: 'Arrows', symbols: arrows },
-  { name: 'Brackets and Other Symbols', symbols: other_symbols },
+  { name: 'Other Symbols', symbols: other_symbols },
   { name: 'Sets', symbols: sets }
 ]
 

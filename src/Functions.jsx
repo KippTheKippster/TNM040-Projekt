@@ -119,10 +119,10 @@ const accent = [
 const functions = [
   { name: 'Matrix', functions: matrix },
   { name: 'Trigonometry', functions: trigonometri },
-  { name: 'Fractions and Binomial', functions: fractions_and_binomial },
+  { name: 'Fractions Binomial', functions: fractions_and_binomial },
   { name: 'Integral', functions: integral },
   { name: 'Summation', functions: summation },
-  { name: 'Exponential and Roots', functions: exponential_and_roots },
+  { name: 'Exponential Roots', functions: exponential_and_roots },
   { name: 'Log and Limits', functions: limits_and_log },
   { name: 'Accents', functions: accent },
 ]
