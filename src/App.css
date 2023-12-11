@@ -145,7 +145,7 @@
   left: 0;
   grid-template-columns: repeat(5, 1fr); /* 6 columns */
   max-height: 200px; /* Adjust as needed */
-  overflow-x:inherit;
+  overflow-x:hidden;
   overflow-y: auto; /* Enable vertical scrolling if needed */
   border: 1px solid #ccc; /* Add a border for better visibility */
   display: none;
@@ -332,6 +332,7 @@ a:hover  {
   padding: 20px;
   opacity: 0;
   position: relative;
+  color: #000;
 }
 .btn-help:hover .text-section{
   animation: forwards fadeIn 0.7s 0.5s ease-in-out ;
@@ -367,3 +368,5 @@ a:hover  {
   right: 20px;
 }
 }
+
+

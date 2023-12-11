@@ -50,11 +50,13 @@ const integral = [
   ["\\oint_{a}^{b}", 0],
   ["dx", 0],
   ["dy", 0],
+  ["\\partial x", 0],
+  ["\\partial y", 0],
   ["d\\theta", 0]
 ]
 
 const summation = [
-  ["\\sum{x}", -1],
+  ["\\sum{}", -1],
   ["\\sum_{a}^{n}", 0],
   ["\\sum_{a}", 0],
   ["\\prod{}", 0],
@@ -121,9 +123,8 @@ const functions = [
   { name: 'Integral', functions: integral },
   { name: 'Summation', functions: summation },
   { name: 'Exponential and Roots', functions: exponential_and_roots },
-  { name: 'Limits and Log', functions: limits_and_log },
+  { name: 'Log and Limits', functions: limits_and_log },
   { name: 'Accents', functions: accent },
 ]
-  
 
-  export default functions;
+export default functions;

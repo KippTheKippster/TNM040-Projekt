@@ -243,7 +243,7 @@ function App() // Här körs appen
           <h2>Recents:</h2>
           {recentElements.map((element, index) => (
             <button key={index} onClick={() => onInsertButtonPressed({ detail: element })}>
-              {<MathJax>{String.raw`$${element}$`}</MathJax>}
+              {<MathJax>{String.raw`$${"\\displaystyle " + element}$`}</MathJax>}
             </button>
           ))}
         </div>
@@ -280,7 +280,7 @@ const renderDropdownContent = (array) => {
   return array.map((item, index) => (
     <button key={index} onClick={() => document.dispatchEvent(new CustomEvent("insertButtonPressed", { detail: item[0] }))}>
       {/* Display the item using the Latex component */}
-      {<MathJax>{String.raw`$${item[0]}$`}</MathJax>}
+      {<MathJax>{String.raw`$${"\\displaystyle " + item[0]}$`}</MathJax>}
     </button>
   ));
 };

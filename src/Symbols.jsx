@@ -195,6 +195,42 @@ const arrows = [
   ["\\searrow", 0]
 ]
 
+const other_symbols = [
+  ["\\partial", 0],
+  ["\\eth", 0],
+  ["\\hbar", 0],
+  ["\\imath", 0],
+  ["\\jmath", 0],
+  ["\\ell", 0],
+  ["\\Re", 0],
+  ["\\Im", 0],
+  ["\\wp", 0],
+  ["\\nabla", 0],
+  ["\\Box", 0],
+  ["\\infty", 0],
+  ["|", 0],
+  ["\\left({}\\right)", -9],
+  ["\\{", 0],
+  ["\\lceil", 0],
+  ["\\ulcorner", 0],
+  ["\\|", 0],
+  ["\\}", 0],
+  ["\\rceil", 0],
+  ["\\urcorner", 0],
+  ["/", 0],
+  ["\\langle", 0],
+  ["\\lfloor", 0],
+  ["\\llcorner", 0],
+  ["\\backslash", 0],
+  ["\\rangle", 0],
+  ["\\rfloor", 0],
+  ["\\lrcorner", 0],
+  ["\\dots", 0],
+  ["\\cdots", 0],
+  ["\\ddots", 0],
+  ["\\vdots", 0]
+]
+
 const sets =[
   ["\\emptyset", 0],
   ["\\varnothing", 0],
@@ -220,43 +256,6 @@ const sets =[
   ["\\setminus", 0]
 ]
 
-const other_symbols = [
-  ["\\partial", 0],
-  ["\\eth", 0],
-  ["\\hbar", 0],
-  ["\\imath", 0],
-  ["\\jmath", 0],
-  ["\\ell", 0],
-  ["\\Re", 0],
-  ["\\Im", 0],
-  ["\\wp", 0],
-  ["\\nabla", 0],
-  ["\\Box", 0],
-  ["\\infty", 0],
-  ["|", 0],
-  ["(\,", 0],
-  ["\\{", 0],
-  ["\\lceil", 0],
-  ["\\ulcorner", 0],
-  ["\\|", 0],
-  [")\,", 0],//maybe )\\,
-  ["\\}", 0],
-  ["\\rceil", 0],
-  ["\\urcorner", 0],
-  ["/", 0],
-  ["\\langle", 0],
-  ["\\lfloor", 0],
-  ["\\llcorner", 0],
-  ["\\backslash", 0],
-  ["\\rangle", 0],
-  ["\\rfloor", 0],
-  ["\\lrcorner", 0],
-  ["\\dots", 0],
-  ["\\cdots", 0],
-  ["\\ddots", 0],
-  ["\\vdots", 0]
-]
-
 const symbols = [
   { name: 'Greek', symbols: greek },
   { name: 'Relation', symbols: relation },
@@ -264,8 +263,8 @@ const symbols = [
   { name: 'Geometry', symbols: geometry },
   { name: 'Binary', symbols: binary },
   { name: 'Arrows', symbols: arrows },
-  { name: 'Sets', symbols: sets },
-  { name: 'Other Symbols', symbols: other_symbols }
+  { name: 'Brackets and Other Symbols', symbols: other_symbols },
+  { name: 'Sets', symbols: sets }
 ]
 
 export default symbols;
