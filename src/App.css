@@ -216,29 +216,58 @@
 
 .sec-center {
   text-align: center;
-  width: fit-content;
 }
 
 .download-dropdown{
+  color: white;
   position: relative;
-  display: inline-block;
-  background-color: #8494c9;
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+  margin: auto;
+  box-shadow: 1px 14px 35px 0 #654e3b;
+  font-size: 22px;
+}
+
+
+#download-button{
+  background-color: #ddb892;
+  margin: auto;
+  padding: 3em;
+  padding-top: 0.6em;
+  padding-bottom: 0.6em;
+  width: fit-content;
+  display: flex;
+}
+
+#download-button .icon{
+  margin: auto;
+  margin-left: 6px;
 }
 
 .download-dropdown-content {
   display: none;
-  position: absolute;
   background-color: #f9f9f9;
   min-width: 160px;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-  padding: 12px 16px;
+  padding: 6px 8px;
   z-index: 1;
 }
-
 .download-dropdown:hover .download-dropdown-content{
-  background-color: aquamarine;
   display: flex;
   flex-direction: column;
+  margin-top: auto;
+  background-color: #ddb892;
+}
+
+a{
+  color: #fff;
+  text-decoration: none;
+}
+
+a:hover  {
+  background-color: #e6ccb2;
+  color: #7F5539;
 }
 
 .logo {
@@ -263,10 +292,6 @@
 }
 .dark-light:checked ~ .logo img{
   filter: brightness(10%);
-}
-
-a:hover {
-  color: #909090;
 }
 
 .btn-help {

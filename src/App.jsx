@@ -261,13 +261,14 @@ function App() // Här körs appen
           <button onClick={() => downloadSVG("SqueezyLatextEquation")}>Download as SVG</button>
 
         </div> */}
-          <div className="download-dropdown" id="dropdown">Download
+        <div className="download-dropdown" id="dropdown">
+          <div id="download-button">Download<Icon className='icon' icon="fe:download" width="24" height="24" /> </div>
           <div className="download-dropdown-content"> 
             <a href="#" onClick={() => downloadText('SqueezyLatextEquation.txt', equationString)}> as Text</a>
             <a href="#" onClick={() => downloadPNG('SqueezyLatextEquation', 256)}> as PNG</a> {/*som en bredd på 256 pixlar eller en upplösning på 256 DPI  */}
             <a href="#" onClick={() => downloadSVG('SqueezyLatextEquation')}> as SVG</a>
           </div>
-          </div>
+        </div>
       </MathJaxContext>
     
     </>
