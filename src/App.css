@@ -60,7 +60,7 @@
 }
 
 #logo{
-  width: 25%;
+  width: 35%;
 }
 
 #latex-container{
@@ -111,6 +111,7 @@
 /* Styling for the outer container */
 .dropdown-container {
   display: grid;
+  grid-gap: 5px;
   grid-template-columns: repeat(9, 1fr);
   /*justify-content: flex-start; /* or space-between */
   max-width: 100%;
@@ -127,7 +128,7 @@
 
 /* Unique styling for the button in each dropdown, otherwhise it uses "button"*/
 .dropbtn {
-  font-size: 0.6em;
+  font-size: 1.6em;
   width: 11em;
   height: 5em;
   display: flex;
@@ -173,7 +174,7 @@
   border: 2px solid #333; /* Add a 2px solid border with a darker color */
   border-top: none; /* Remove the top border */
   padding: 10px;
-  height: 2em;
+  /*height: 2em;*/
 }
 
 .recent-elements button {
