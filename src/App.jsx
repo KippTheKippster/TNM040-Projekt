@@ -238,45 +238,7 @@ function App() // Här körs appen
             <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ut aliquam, neque aliquid qui nulla quibusdam quos natus temporibus consequuntur vero recusandae illum provident aut ex, assumenda nobis?</p>
           </div>
         </div>
-
-        <div className="dropdown-container">  
-          <h2>Symbols:</h2>
-          {symbols.map((symbolObject, index) => (
-            // Create a "dropdown" for each object
-            <div key={index} className="dropdown">
-              {/* The button for the dropdown displays the name of the object */}
-              <button className="dropbtn">
-
-                {/* Display the first symbol underneath the name */}
-                {symbolObject.symbols.length > 0 && (
-                  <MathJax>{String.raw`$${symbolObject.symbols[0][0]}$`}</MathJax>
-                )}
-                <h2>{symbolObject.name}</h2>
-                {/*<br />*/}
-
-              </button>
-              <div className="dropdown-content">
-                {/* Call the function to render dropdown content */}
-                {renderDropdownContent(symbolObject.symbols)}
-              </div>
-            </div>
-          ))}
-          <h2>Functions:</h2>
-          {functions.map((functionObject, index) => (
-            <div key={index} className="dropdown">
-              <button className="dropbtn">
-
-                {functionObject.functions.length > 0 && (
-                  <MathJax>{String.raw`$${functionObject.functions[0][0]}$`}</MathJax>
-                )}
-                <h2>{functionObject.name}</h2>
-              </button>
-              <div className="dropdown-content">
-                {renderDropdownContent(functionObject.functions)}
-              </div>
-            </div>
-          ))}
-        </div>
+        {dropdownContainer}
         <div className="recent-elements">
           <h2>Recents:</h2>
           {recentElements.map((element, index) => (
