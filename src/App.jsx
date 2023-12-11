@@ -279,7 +279,7 @@ const renderDropdownContent = (array) => {
   return array.map((item, index) => (
     <button key={index} onClick={() => document.dispatchEvent(new CustomEvent("insertButtonPressed", { detail: item[0] }))}>
       {/* Display the item using the Latex component */}
-      {<MathJax>{String.raw`$${item[0]}$`}</MathJax>}
+      {<MathJax>{String.raw`$${"\\displaystyle " + item[0]}$`}</MathJax>}
     </button>
   ));
 };

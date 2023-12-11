@@ -123,9 +123,8 @@ const functions = [
   { name: 'Integral', functions: integral },
   { name: 'Summation', functions: summation },
   { name: 'Exponential and Roots', functions: exponential_and_roots },
-  { name: 'Limits and Log', functions: limits_and_log },
+  { name: 'Log and Limits', functions: limits_and_log },
   { name: 'Accents', functions: accent },
 ]
-  
 
-  export default functions;
+export default functions;
